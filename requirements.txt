@@ -1,4 +1,3 @@
 flask
-csscompressor
-coffeescript
+flask-sqlalchemy
 click
