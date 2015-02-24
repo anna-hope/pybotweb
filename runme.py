@@ -1,14 +1,18 @@
 #!/usr/bin/env python3.4
 
-from pybotweb import app
+from pybot import app, load_app
 import click
 
 
 def run_production(host, port):
-    ...
+    load_app()
+    # fix to use a production server
+    app.run(host=host, port=port)
 
 def run_debug(host, port):
-    app.run(host=host, port=port, debug=True)
+    load_app()
+    app.config.from_object('pybotconfig.DebugConfig')
+    app.run(host=host, port=port)
 
 @click.command()
 @click.option('--host', default='localhost', help='host')
