@@ -13,8 +13,10 @@ def create_user(*args, **kwargs):
     new_user = User(*args, **kwargs)
     add_to_db(new_user)
 
-def get_user(email=None, first_name=None, last_name=None):
-    if email:
+def get_user(userid=None, email=None, first_name=None, last_name=None):
+    if userid:
+        f = partial(User.query.filter_by, id=userid)
+    elif email:
         f = partial(User.query.filter_by, email=email)
     elif first_name:
         f = partial(User.query.filter_by, first_name=first_name)
@@ -24,7 +26,7 @@ def get_user(email=None, first_name=None, last_name=None):
     return f().first()
 
 def change_user(email, **kwargs):
-    user = yield from get_user(email=email)
+    user = get_user(email=email)
     if 'new_email' in kwargs:
         user.email = kwargs['new_email']
         del kwargs['new_email']
