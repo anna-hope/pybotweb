@@ -11,8 +11,8 @@ def run_production(host, port):
 
 def run_debug(host, port):
     load_app()
-    app.config.from_object('pybotconfig.DebugConfig')
-    app.run(host=host, port=port)
+    app.config.from_object('config.DebugConfig')
+    app.run(debug=True, host=host, port=port)
 
 @click.command()
 @click.option('--host', default='localhost', help='host')
