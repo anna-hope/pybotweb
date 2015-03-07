@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block fonts %}
+	{{ super() }}
+	<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block content %}
+	<div id="code_area">
+		<textarea id="code_text">Enter your code here...</textarea>
+		<br>
+		<a id="run_button" href="#">Run!</a>
+	</div>
+{% endblock %}
