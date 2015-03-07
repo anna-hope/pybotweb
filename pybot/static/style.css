@@ -1,0 +1,40 @@
+body
+{
+	max-height: auto;
+	max-width: auto;
+}
+
+#content
+{
+	font-family: 'Signika', Helvetica, Sans-Serif;
+	font-size: 1.5em;
+	margin-left: 3em;
+}
+
+header
+{
+	font-family: 'Overlock', Arial, Sans-Serif;
+	font-size: 5em;
+	text-align: center;
+}
+
+footer
+{
+	font-family: 'Overlock', Arial, Sans-Serif;
+	font-size: 1em;
+	text-align: center;
+}
+
+/* play area */
+
+#code_area
+{
+	text-align: center;
+}
+
+#code_text
+{
+	height: 15em;
+	font-size: 1.2em;
+	font-family: 'Source Code Pro', Monospace;
+}
