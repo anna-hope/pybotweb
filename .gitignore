@@ -58,3 +58,5 @@ nc_*
 brython
 
 config.py
+
+*.js
