@@ -31,12 +31,12 @@ def run_debug(host, port, straightcoffee=False):
     app.config.from_object('config.DebugConfig')
 
     if straightcoffee:
+        app.config['STRAIGHTCOFFEE'] = True
         # code to run coffeescript straight
         ...
     else:
         # compile coffeescript
         compile_coffee()
-        app.config['STRAIGHTCOFFEE'] = True
 
     app.run(debug=True, host=host, port=port)
 
