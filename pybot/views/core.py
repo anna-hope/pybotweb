@@ -7,9 +7,7 @@ from flask.ext.login import login_required, login_user
 @app.route('/')
 def home():
 	return render_template('index.html',
-		header_message='pybot', 
-		content='welcome to pybot',
-		footer_message='pybot!')
+		content='welcome to pybot')
 
 
 @app.route('/login/', methods=('GET', 'POST'))

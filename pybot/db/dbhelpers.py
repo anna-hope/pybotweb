@@ -1,5 +1,8 @@
 from functools import partial
-from pybot.db.dbmodel import db, User, Page
+from pybot.db.dbmodel import (db, User, Page, 
+                                Message, MessageType)
+
+from sqlalchemy.orm.exc import NoResultFound
 
 def add_to_db(obj):
     db.session.add(obj)
@@ -58,3 +61,41 @@ def change_page(title, **kwargs):
 def delete_page(title):
     page = get_page(title)
     remove_from_db(page)
+
+
+def get_header():
+    try:
+        header = Message.query.filter_by(
+            message_type=MessageType.header).first()
+    except NoResultFound:
+        header = None
+    return header
+
+def set_header(text):
+    current_header = get_header()
+    if current_header:
+        Message.query.filter_by(
+                            message_type=MessageType.header).update({Message.text: text})
+        db.session.commit()
+    else:
+        new_header = Message(MessageType.header, text)
+        add_to_db(new_header)
+
+def get_footer():
+    try:
+        footer = Message.query.filter_by(
+                            message_type=MessageType.footer).first()
+    except NoResultFound:
+        footer = None
+    return footer
+
+def set_footer(text):
+    current_footer = get_footer()
+    if current_footer:
+        Message.query.filter_by(
+                            message_type=MessageType.footer).update({Message.text: text})
+        db.session.commit()
+    else:
+        new_footer = Message(MessageType.footer, text)
+        add_to_db(new_footer)
+

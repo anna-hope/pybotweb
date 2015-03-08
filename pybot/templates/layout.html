@@ -16,17 +16,25 @@
 	<link href='http://fonts.googleapis.com/css?family=Overlock|Signika&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	{% endblock %}
 
+	<script type="text/javascript">
+		{% if config['DEBUG'] %}
+		$DEBUG = true;
+		{% else %}
+		$DEBUG = false;
+		{% endif %}
+	</script>
+
 	{% block scripts %}{% endblock %}
 </head>
 
 <body>
-	<header>{% block header %}{% endblock %}</header>
+	<header>{% block header %}{{ header_message }}{% endblock %}</header>
 
 	<div id="content">
 	{% block content %}{% endblock %}
 	</div>
 
-	<footer>{% block footer %}{% endblock %}</footer>
+	<footer>{% block footer %}{{ footer_message }}{% endblock %}</footer>
 </body>
 
 </html>

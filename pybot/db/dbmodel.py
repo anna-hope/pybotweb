@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 from pybot import app
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -50,9 +52,25 @@ class Page(db.Model):
 	title = db.Column(db.Text)
 	content = db.Column(db.Text)
 
-	def __init__(self):
+	def __init__(self, title, content):
 		self.title = title
 		self.content = content
 
 	def __repr__(self):
 		return 'Page {}'.format(self.title)
+
+class MessageType(IntEnum):
+	header = 1
+	footer = 2
+
+class Message(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	message_type = db.Column(db.Integer, unique=True)
+	text = db.Column(db.Text)
+
+	def __init__(self, message_type, text):
+		self.message_type = message_type
+		self.text = text
+
+	def __repr__(self):
+		return '{}: {}'.format(self.message_type, self.text)
