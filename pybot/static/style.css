@@ -36,5 +36,5 @@ footer
 {
 	height: 15em;
 	font-size: 1.2em;
-	font-family: 'Source Code Pro', Monospace;
+	font-family: 'Source Code Pro', Monaco, monospace;
 }
