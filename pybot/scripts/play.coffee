@@ -1,4 +1,11 @@
+run_brython = () ->
+	if $DEBUG
+		brython(1)
+	else
+		brython()
+
 $('document').ready () =>
+	run_brython()
 
 	mcm = CodeMirror.fromTextArea(document.getElementById 'code_text',
 									{mode: 'Python'})
@@ -11,15 +18,13 @@ $('document').ready () =>
 		# hack to stop code from piling up
 		# (replace with something better)
 		$('#brython_code').remove()
+		$('#output_area').empty()
 
 		code_section = $('<script type="text/python" id="brython_code"></script>')
 		code_section.text user_code
 
 		$('#content').append code_section
-		if $DEBUG
-			brython(1)
-		else
-			brython()
+		run_brython()
 
 	$('div.CodeMirror').on 'click focusin', (event) =>
 		code_area = $('#code_area')

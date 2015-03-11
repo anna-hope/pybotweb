@@ -49,3 +49,9 @@ footer
 	font-size: 1em;
 	font-family: 'Source Code Pro', Monaco, monospace;
 }
+
+#output_area
+{
+	text-align: center;
+	font-family: 'Source Code Pro', Monaco, monospace;
+}

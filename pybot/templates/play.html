@@ -20,6 +20,9 @@
 	{# code to run coffeescript without compiling it #}
 {% endif %}
 
+<script type="text/python" 
+src="{{ url_for('static', filename='scripts/prepare_play.py') }}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -28,4 +31,6 @@
 		<br>
 		<a id="run_button" href="#">Run!</a>
 	</div>
+
+	<div id="output_area"></div>
 {% endblock %}
