@@ -10,6 +10,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{{ url_for('static', filename='brython/brython.js') }}"></script>
 
+<script src="{{ url_for('static', filename='codemirror/lib/codemirror.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror/lib/codemirror.css') }}">
+<script src="{{ url_for('static', filename='codemirror/mode/python/python.js') }}"></script>
+
 {% if not config.get('STRAIGHTCOFFEE') %}
 	<script src="{{ url_for('static', filename='scripts/play.js') }}"></script>
 {% else %}
@@ -19,8 +23,8 @@
 {% endblock %}
 
 {% block content %}
-	<div id="code_area">
-		<textarea id="code_text" data-used='no'>Enter your code here...</textarea>
+	<div id="code_area" data-used='no'>
+		<textarea id="code_text">Enter your code here...</textarea>
 		<br>
 		<a id="run_button" href="#">Run!</a>
 	</div>
