@@ -4,11 +4,11 @@ from pybot.db.dbmodel import (db, User, Page,
 
 from sqlalchemy.orm.exc import NoResultFound
 
-def add_to_db(obj):
+def add_to_db(obj: db.Model):
     db.session.add(obj)
     db.session.commit()
 
-def remove_from_db(obj):
+def remove_from_db(obj: db.Model):
    db.session.delete(obj)
    db.session.commit()
 
@@ -28,7 +28,7 @@ def get_user(userid=None, email=None, first_name=None, last_name=None):
 
     return f().first()
 
-def change_user(email, **kwargs):
+def change_user(email: str, **kwargs):
     user = get_user(email=email)
     if 'new_email' in kwargs:
         user.email = kwargs['new_email']
@@ -37,19 +37,19 @@ def change_user(email, **kwargs):
         user.__setattr__(k, v)
     db.session.commit()
 
-def delete_user(email):
+def delete_user(email: str):
     user = get_user(email=email)
     remove_from_db(user)
 
-def create_page(title, content):
+def create_page(title: str, content: str):
     new_page = Page(title, content)
     add_to_db(new_page)
 
-def get_page(title):
+def get_page(title: str):
     page = Page.query.filter_by(title=title).first()
     return page 
 
-def change_page(title, **kwargs):
+def change_page(title: str, **kwargs):
     page = get_page(title)
     if 'new_title' in kwargs:
         page.title = kwargs['new_title']
@@ -58,7 +58,7 @@ def change_page(title, **kwargs):
         page.__setattr__(k, v)
     db.session.commit()       
 
-def delete_page(title):
+def delete_page(title: str):
     page = get_page(title)
     remove_from_db(page)
 
@@ -71,7 +71,7 @@ def get_header():
         header = None
     return header
 
-def set_header(text):
+def set_header(text: str):
     current_header = get_header()
     if current_header:
         Message.query.filter_by(
@@ -89,7 +89,7 @@ def get_footer():
         footer = None
     return footer
 
-def set_footer(text):
+def set_footer(text: str):
     current_footer = get_footer()
     if current_footer:
         Message.query.filter_by(
