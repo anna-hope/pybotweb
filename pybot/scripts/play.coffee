@@ -15,8 +15,6 @@ $('document').ready () =>
 		code_area = $('#code_text')
 		user_code = code_area.val()
 
-		# hack to stop code from piling up
-		# (replace with something better)
 		$('#brython_code').remove()
 		$('#output_area').empty()
 
@@ -31,11 +29,3 @@ $('document').ready () =>
 		if code_area.attr('data-used') is 'no'
 			code_area.attr 'data-used', 'yes'
 			mcm.setValue ''
-
-	# $('#code_area').on 'click focusin', (event) =>
-	# 	code_area = $(event.target)
-	# 	if code_area.attr('data-used') is 'no'
-	# 		console.log 'focused'
-	# 		mcm.setValue ''
-	# 		console.log mcm.getValue()
-	# 		code_area.attr 'data-used', 'yes'
