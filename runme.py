@@ -21,8 +21,17 @@ def compile_coffee(coffee_path='scripts', output_path=('static', 'scripts')):
             with out_file.open('w') as outfile:
                 outfile.write(js_text)
 
-def run_production(host, port):
+def prepare_app(debug=False):
+    compile_coffee()
     load_app()
+    if debug:
+        app.config.from_object('config.DebugConfig')
+    else:
+        app.config.from_object('config.ProductionConfig')
+
+
+def run_production(host, port):
+    prepare_app()
     # fix to use a production server
     app.run(host=host, port=port)
 
