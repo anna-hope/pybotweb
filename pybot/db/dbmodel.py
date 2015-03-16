@@ -12,7 +12,7 @@ class User(db.Model):
 	last_name = db.Column(db.String(80))
 	_password = db.Column(db.String(255))
 
-	def __init__(self, email, first_name, last_name):
+	def __init__(self, email: str, first_name: str, last_name: str):
 		self.email = email.casefold()
 		self.username = email.casefold()
 		self.first_name = first_name
@@ -52,7 +52,7 @@ class Page(db.Model):
 	title = db.Column(db.Text)
 	content = db.Column(db.Text)
 
-	def __init__(self, title, content):
+	def __init__(self, title: str, content: str):
 		self.title = title
 		self.content = content
 
@@ -68,9 +68,24 @@ class Message(db.Model):
 	message_type = db.Column(db.Integer, unique=True)
 	text = db.Column(db.Text)
 
-	def __init__(self, message_type, text):
+	def __init__(self, message_type: MessageType, text: str):
 		self.message_type = message_type
 		self.text = text
 
 	def __repr__(self):
 		return '{}: {}'.format(self.message_type, self.text)
+
+class Link(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	endpoint = db.Column(db.String(120))
+	variable = db.Column(db.String(255))
+	text = db.Column(db.String(255), unique=True)
+
+	def __init__(self, text: str, endpoint='', variable=''):
+		self.text = text
+		self.endpoint = endpoint
+		self.variable = variable
+
+	def __repr__(self):
+		return 'Link {}: {}/{}'.format(self.text, self.endpoint,
+								 self.variable)
