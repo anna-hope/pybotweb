@@ -1,22 +1,29 @@
 from functools import partial
 from pybot.db.dbmodel import (db, User, Page, 
-                                Message, MessageType)
+                                Message, MessageType,
+                                Link)
 
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
 
-def add_to_db(obj: db.Model):
+def add_to_db(obj: db.Model) -> bool:
     db.session.add(obj)
-    db.session.commit()
+    try:
+        db.session.commit()
+        return True
+    except IntegrityError:
+        db.session.rollback()
+        return False
 
 def remove_from_db(obj: db.Model):
    db.session.delete(obj)
    db.session.commit()
 
-def create_user(*args, **kwargs):
+def create_user(*args, **kwargs) -> bool:
     new_user = User(*args, **kwargs)
-    add_to_db(new_user)
+    return add_to_db(new_user)
 
-def get_user(userid=None, email=None, first_name=None, last_name=None):
+def get_user(userid=None, email=None, first_name=None, last_name=None) -> User:
     if userid:
         f = partial(User.query.filter_by, id=userid)
     elif email:
@@ -45,7 +52,7 @@ def create_page(title: str, content: str):
     new_page = Page(title, content)
     add_to_db(new_page)
 
-def get_page(title: str):
+def get_page(title: str) -> Page:
     page = Page.query.filter_by(title=title).first()
     return page 
 
@@ -63,7 +70,7 @@ def delete_page(title: str):
     remove_from_db(page)
 
 
-def get_header():
+def get_header() -> Message:
     try:
         header = Message.query.filter_by(
             message_type=MessageType.header).first()
@@ -81,7 +88,7 @@ def set_header(text: str):
         new_header = Message(MessageType.header, text)
         add_to_db(new_header)
 
-def get_footer():
+def get_footer() -> Message:
     try:
         footer = Message.query.filter_by(
                             message_type=MessageType.footer).first()
@@ -98,4 +105,23 @@ def set_footer(text: str):
     else:
         new_footer = Message(MessageType.footer, text)
         add_to_db(new_footer)
+
+def add_link(text: str, endpoint='', variable='') -> bool:
+    new_link = Link(text, endpoint, variable)
+    return add_to_db(new_link)
+
+def get_links() -> [Link]:
+    return Link.query.all()
+
+def remove_link(text: str) -> bool:
+    try:
+        link = Link.query.filter_by(text=text).first()
+    except NoResultFound:
+        return False
+    remove_from_db(link)
+    return True
+
+
+
+
 

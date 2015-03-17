@@ -34,6 +34,16 @@
 	{% block content %}{% endblock %}
 	</div>
 
+	<div id="links">
+	{% block links %}
+	<ul>
+	{% for link in links %}
+	<li><a href="{{ link['url'] }}">{{ link['text'] }}</a></li>
+	{% endfor %}
+	</ul>
+	{% endblock %}
+	</div>
+
 	<footer>{% block footer %}{{ footer_message }}{% endblock %}</footer>
 </body>
 
