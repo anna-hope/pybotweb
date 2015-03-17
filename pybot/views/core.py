@@ -1,28 +1,45 @@
 from pybot import app, login_manager
+from pybot import helpers
 from pybot.db import dbhelpers
 
-from flask import render_template, request, redirect, url_for, flash
+from flask import (render_template, request, redirect, 
+					url_for, flash)
 from flask.ext.login import login_required, login_user
+from wtforms import Form, TextField, PasswordField, validators
 
 @app.route('/')
 def home():
 	return render_template('index.html',
 		content='welcome to pybot')
 
+class LoginForm(Form):
+	email = TextField('email', (validators.Email, validators.InputRequired))
+	password = PasswordField('password', (validators.InputRequired,))
+
 
 @app.route('/login/', methods=('GET', 'POST'))
 def login():
-	if request.method == 'GET':
-		return render_template('login.html')
-	elif request.method == 'POST':
-		email = request.form['email']
-		password = request.form.get('password', None)
+	error = None
+	form = LoginForm(request.form)
+	if request.method == 'POST':
+		email = form.email.data
+		password = form.password.data
 		if check_user(email, password):
 			user = load_user(email)
 			login_user(user)
 			flash('Hi, {}!'.format(user.first_name))
-	return redirect(url_for('home'))
-
+			if request.args.get('asjson'):
+				return helpers.make_json_message(
+					'success', 'Hi, {}'.format(user.first_name))
+			return redirect(url_for('login.html', form=form))
+		else:
+			error = 'The login data you provided did not work :('
+			# move this to the strings file
+			if request.args.get('asjson'):
+				return helpers.make_json_message(
+						'error', 'the login data you gave did not work :(')
+	return render_template('login.html', form=form, error=error)
+	
 @app.route('/logout/')
 @login_required
 def logout():
@@ -30,7 +47,7 @@ def logout():
 	return redirect(url_for('home'))
 
 
-def check_user(email, password):
+def check_user(email, password) -> bool:
 	user = dbhelpers.get_user(email=email)
 	try:
 		return user.password == password
@@ -38,8 +55,7 @@ def check_user(email, password):
 		return False
 
 @login_manager.user_loader
-def load_user(userid):
-	# here, the userid is the user's email
+def load_user(userid: 'user email') -> 'User':
 	return dbhelpers.get_user(email=userid)
 
 

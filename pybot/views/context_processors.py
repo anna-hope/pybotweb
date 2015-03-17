@@ -4,6 +4,7 @@ from pybot import app
 from pybot.db import dbhelpers
 
 from flask import url_for
+from flask.ext.login import current_user
 
 @app.context_processor
 def inject_header():
@@ -20,6 +21,10 @@ def inject_footer():
 	except AttributeError:
 		footer_text = 'no footer text set'
 	return {'footer_message': footer_text}
+
+@app.context_processor
+def inject_current_user():
+	return {'current_user': current_user}
 
 @app.context_processor
 def inject_links():

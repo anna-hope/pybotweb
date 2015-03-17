@@ -19,8 +19,9 @@ def remove_from_db(obj: db.Model):
    db.session.delete(obj)
    db.session.commit()
 
-def create_user(*args, **kwargs) -> bool:
-    new_user = User(*args, **kwargs)
+def create_user(email=None, first_name=None, last_name=None, password=None) -> bool:
+    new_user = User(email, first_name, last_name)
+    new_user.password = password
     return add_to_db(new_user)
 
 def get_user(userid=None, email=None, first_name=None, last_name=None) -> User:
@@ -96,7 +97,7 @@ def get_footer() -> Message:
         footer = None
     return footer
 
-def set_footer(text: str):
+def set_footer(text: str) -> bool:
     current_footer = get_footer()
     if current_footer:
         Message.query.filter_by(
@@ -104,14 +105,17 @@ def set_footer(text: str):
         db.session.commit()
     else:
         new_footer = Message(MessageType.footer, text)
-        add_to_db(new_footer)
+        return add_to_db(new_footer)
 
 def add_link(text: str, endpoint='', variable='') -> bool:
     new_link = Link(text, endpoint, variable)
     return add_to_db(new_link)
 
 def get_links() -> [Link]:
-    return Link.query.all()
+    try:
+        return Link.query.all()
+    except:
+        return []
 
 def remove_link(text: str) -> bool:
     try:
@@ -120,8 +124,4 @@ def remove_link(text: str) -> bool:
         return False
     remove_from_db(link)
     return True
-
-
-
-
 
