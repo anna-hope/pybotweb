@@ -1,6 +1,7 @@
-flask >= 0.10
+flask>=0.10
 flask-sqlalchemy
+Flask-Login>=0.2.11
 click
 coffeescript
 uwsgi
-wtforms >= 2.0
+wtforms>=2.0
