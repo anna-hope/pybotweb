@@ -1,28 +1,37 @@
 #!/usr/bin/env python3.4
 
-import pathlib
+import pathlib, asyncio
 
 from pybot import app, load_app
 import click, coffeescript
 
+@asyncio.coroutine
+def coffee_to_js(coffeefile_path, js_file_path):
+    print('compiling {}'.format(coffeefile_path.name))
+    with coffeefile_path.open() as file:
+        js_code = coffeescript.compile(file.read())
+    with js_file_path.open('w') as outputfile:
+        outputfile.write(js_code)
 
+@asyncio.coroutine
 def compile_coffee(coffee_path='scripts', output_path=('static', 'scripts')):
     path = pathlib.Path(app.root_path, coffee_path)
     out_path = pathlib.Path(app.root_path, *output_path)
     if not out_path.exists():
         out_path.mkdir()
 
+    to_compile = []
+
     for file in path.iterdir():
         if file.suffix == ('.coffee'):
             out_file = pathlib.Path(out_path, (file.stem + '.js'))
+            to_compile.append(coffee_to_js(file, out_file))
 
-            with file.open() as coffeefile:
-                js_text = coffeescript.compile(coffeefile.read())
-            with out_file.open('w') as outfile:
-                outfile.write(js_text)
+    yield from asyncio.wait(to_compile)
 
 def prepare_app(debug=False):
-    compile_coffee()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(compile_coffee())
     load_app()
     if debug:
         app.config.from_object('config.DebugConfig')
@@ -45,7 +54,7 @@ def run_debug(host, port, straightcoffee=False):
         ...
     else:
         # compile coffeescript
-        compile_coffee()
+        prepare_app(debug=True)
 
     app.run(debug=True, host=host, port=port)
 
