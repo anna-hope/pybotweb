@@ -17,6 +17,7 @@
 	{% endblock %}
 
 	<script type="text/javascript">
+		$SITE_ROOT = {{ request.script_root | tojson }};
 		{% if config['DEBUG'] %}
 		$DEBUG = true;
 		{% else %}
@@ -24,11 +25,31 @@
 		{% endif %}
 	</script>
 
-	{% block scripts %}{% endblock %}
+	{% block scripts %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	{% endblock %}
 </head>
 
 <body>
 	<header>{% block header %}{{ header_message }}{% endblock %}</header>
+
+	<div id="user_panel">
+	{% if not current_user.is_anonymous %}
+	{{ 'Hello, {}'.format(current_user.first_name) }}
+	{% endif %}
+	</div>
+
+	{% block flashed_messages %}
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul class="flashed_messages">
+		{% for message in messages %}
+			<li>{{ message }}</li>
+		{% endfor %}
+		{% endif %}
+	{% endwith %}
+	{% endblock %}
+
 
 	<div id="content">
 	{% block content %}{% endblock %}

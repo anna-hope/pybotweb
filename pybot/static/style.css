@@ -25,6 +25,26 @@ footer
 	text-align: center;
 }
 
+#user_panel
+{
+	font-family: 'Overlock', Arial, Sans-Serif;
+	font-size: 1em;
+	text-align: center; 
+}
+
+/* login */
+
+#login_form
+{
+	text-align: center;
+}
+
+#error_message
+{
+	text-align: center;
+	color: red;
+}
+
 /* play area */
 
 #code_area
