@@ -1,0 +1,5 @@
+{% macro input(name, type, value='')  -%}
+  <div id="{{ 'input_' + name }}">
+  <input type="{{ type }}" value="{{ value|escape }}" name="{{ name }}">
+  </div>
+{%- endmacro %}
