@@ -34,12 +34,13 @@
 <body>
 	<header>{% block header %}{{ header_message }}{% endblock %}</header>
 
-	<div id="user_panel">
 	{% if current_user.is_authenticated() %}
-	{{ 'Hello, {}'.format(current_user.first_name) }}
-	<a href={{ url_for('logout') | tojson }}>Log out</a>
+		<div id="user_panel">
+		{{ 'Hello, {}'.format(current_user.first_name) }}
+		<a href={{ url_for('admin') | tojson }}>Admin</a>
+		<a href={{ url_for('logout') | tojson }}>Log out</a>
+		</div>
 	{% endif %}
-	</div>
 
 	{% block flashed_messages %}
 	{% with messages = get_flashed_messages() %}
