@@ -8,8 +8,10 @@ import click, coffeescript
 @asyncio.coroutine
 def coffee_to_js(coffeefile_path, js_file_path):
     print('compiling {}'.format(coffeefile_path.name))
+    loop = asyncio.get_event_loop()
     with coffeefile_path.open() as file:
-        js_code = coffeescript.compile(file.read())
+        js_code = yield from loop.run_in_executor(None,
+            coffeescript.compile, file.read())
     with js_file_path.open('w') as outputfile:
         outputfile.write(js_code)
 
