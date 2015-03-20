@@ -1,4 +1,8 @@
 show_error = (message) ->
+	if $('#error_message')?
+		console.log 'it exists!'
+		$('#error_message').remove() 
+
 	error_div = $('<div id="error_message"></div>')
 	error_div.append message
 
@@ -19,6 +23,6 @@ $(document).ready () =>
 		jqxhr.done (data) =>
 			status = data['status']
 			if status is 'success'
-				window.location.href = $SITE_ROOT
+				window.location.href = $HOME
 			else if status is 'error'
 				show_error data['message']
