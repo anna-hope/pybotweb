@@ -18,6 +18,7 @@
 
 	<script type="text/javascript">
 		$SITE_ROOT = {{ request.script_root | tojson }};
+		$HOME = {{ url_for('home') | tojson }};
 		{% if config['DEBUG'] %}
 		$DEBUG = true;
 		{% else %}
@@ -34,8 +35,9 @@
 	<header>{% block header %}{{ header_message }}{% endblock %}</header>
 
 	<div id="user_panel">
-	{% if not current_user.is_anonymous %}
+	{% if current_user.is_authenticated() %}
 	{{ 'Hello, {}'.format(current_user.first_name) }}
+	<a href={{ url_for('logout') | tojson }}>Log out</a>
 	{% endif %}
 	</div>
 
