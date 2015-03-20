@@ -25,6 +25,12 @@ footer
 	text-align: center;
 }
 
+input
+{
+	font-family: 'Overlock', Arial, Sans-Serif;
+	font-size: 0.8em;
+}
+
 #user_panel
 {
 	font-family: 'Overlock', Arial, Sans-Serif;
