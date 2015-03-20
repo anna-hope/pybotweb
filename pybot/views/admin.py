@@ -23,11 +23,12 @@ class LinkForm(PybotForm):
 	forms['links'] = __qualname__
 
 
+@app.route('/admin/')
 @app.route('/admin/<section>')
 @login_required
 def admin(section=None):
-	forms = {key: eval(value) for key, value in forms.items()}
-	return render_template('admin.html', forms=forms)
+	forms_dict = {key: eval(value) for key, value in forms.items()}
+	return render_template('admin.html', forms=forms_dict)
 
 @app.route('/add_link/', methods=('POST',))
 @login_required

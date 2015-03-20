@@ -1,7 +1,23 @@
 {% extends 'layout.html' %}
+{# {# from 'forms.html' import input #} #}
 
-{% block header %}{{ Pybot administration }}{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock %}
+
+{% block header %}PyBot Administration{% endblock %}
 
 {% block content %}
-{# add forms #}
+{% set form = forms['links']() %}
+<div id="manage_links">
+<form action="{{ url_for('add_link') }}">
+{{ form.link_text.label }}: {{ form.link_text() }}
+<br>
+{{ form.url.label }}: {{ form.url() }}
+<br>
+{{ form.variable.label }}: {{ form.variable() }}
+<br>
+<input type="submit" value="add link">
+</form>
+</div>
 {% endblock %}
