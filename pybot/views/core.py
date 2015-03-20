@@ -4,7 +4,7 @@ from pybot.db import dbhelpers
 
 from flask import (render_template, request, redirect, 
 					url_for, flash)
-from flask.ext.login import login_required, login_user
+from flask.ext.login import login_required, login_user, logout_user
 from wtforms import Form, TextField, PasswordField, validators
 
 @app.route('/')
@@ -31,7 +31,7 @@ def login():
 			if request.args.get('asjson'):
 				return helpers.make_json_message(
 					'success', 'Hi, {}'.format(user.first_name))
-			return redirect(url_for('login.html', form=form))
+			return redirect(url_for('home'))
 		else:
 			error = 'The login data you provided did not work :('
 			# move this to the strings file
