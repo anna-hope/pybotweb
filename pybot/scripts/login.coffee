@@ -19,7 +19,9 @@ $(document).ready () =>
 			email: email
 			password: password
 
-		jqxhr = $.post $SITE_ROOT + '/login/?asjson=true', payload
+		form_action = $(this).attr 'action'
+
+		jqxhr = $.post form_action + '?asjson=true', payload
 		jqxhr.done (data) =>
 			status = data['status']
 			if status is 'success'
