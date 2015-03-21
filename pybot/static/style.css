@@ -11,18 +11,25 @@ body
 	margin-left: 3em;
 }
 
-header
+header, footer
 {
 	font-family: 'Overlock', Arial, Sans-Serif;
-	font-size: 5em;
 	text-align: center;
+}
+
+header
+{
+	font-size: 5em;
+}
+
+a.header_link
+{
+	text-decoration: none;
 }
 
 footer
 {
-	font-family: 'Overlock', Arial, Sans-Serif;
 	font-size: 1em;
-	text-align: center;
 }
 
 input
@@ -38,16 +45,28 @@ input
 	text-align: center; 
 }
 
+/* links */
+
+ul.links_list
+{
+	text-align: center;
+}
+
+ul.links_list li
+{
+	display: inline;
+	list-style-type: none;
+}
+
 /* login */
 
-#login_form
+#login_form, #error_message
 {
 	text-align: center;
 }
 
 #error_message
 {
-	text-align: center;
 	color: red;
 }
 
