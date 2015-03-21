@@ -32,13 +32,13 @@
 </head>
 
 <body>
-	<header>{% block header %}{{ header_message }}{% endblock %}</header>
+	<header><a class="header_link" href="{{ url_for('home') }}">{% block header %}{{ header_message }}{% endblock %}</a></header>
 
 	{% if current_user.is_authenticated() %}
 		<div id="user_panel">
 		{{ 'Hello, {}'.format(current_user.first_name) }}
-		<a href={{ url_for('admin') | tojson }}>Admin</a>
-		<a href={{ url_for('logout') | tojson }}>Log out</a>
+		<a href={{ url_for('admin') | tojson }}>admin</a>
+		<a href={{ url_for('logout') | tojson }}>log out</a>
 		</div>
 	{% endif %}
 
@@ -53,19 +53,19 @@
 	{% endwith %}
 	{% endblock %}
 
+	<div id="links">
+	{% block links %}
+		<ul class="links_list">
+		{% for link in links %}
+		<li><a href="{{ link['url'] }}">{{ link['text'] }}</a></li>
+		{% endfor %}
+		</ul>
+		{% endblock %}
+	</div>
+
 
 	<div id="content">
 	{% block content %}{% endblock %}
-	</div>
-
-	<div id="links">
-	{% block links %}
-	<ul>
-	{% for link in links %}
-	<li><a href="{{ link['url'] }}">{{ link['text'] }}</a></li>
-	{% endfor %}
-	</ul>
-	{% endblock %}
 	</div>
 
 	<footer>{% block footer %}{{ footer_message }}{% endblock %}</footer>
