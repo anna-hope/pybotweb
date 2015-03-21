@@ -3,14 +3,15 @@
 
 {% block scripts %}
 {{ super() }}
+<script src="{{ url_for('static', filename='scripts/admin.js') }}"></script>
 {% endblock %}
 
 {% block header %}PyBot Administration{% endblock %}
 
 {% block content %}
-{% set form = forms['links']() %}
+{% set form = forms['links'] %}
 <div id="manage_links">
-<form action="{{ url_for('add_link') }}">
+<form id="add_link_form" action="{{ url_for('add_link') }}">
 {{ form.link_text.label }}: {{ form.link_text() }}
 <br>
 {{ form.url.label }}: {{ form.url() }}
@@ -19,5 +20,13 @@
 <br>
 <input type="submit" value="add link">
 </form>
+
+{% set form = forms['remove_links'] %}
+
+<form id="remove_link_form" action="{{ url_for('remove_link') }}">
+{{ form.link.label }}: {{ form.link() }}
+<br>
+<input type="submit" value="remove link">
 </div>
+
 {% endblock %}
