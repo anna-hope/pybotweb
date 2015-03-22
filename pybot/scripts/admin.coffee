@@ -20,12 +20,11 @@ remove_link = (link_text) ->
 	add_link_choices = $('#remove_link_choice').children()
 
 	for link in links
-		link = $(link)
-		if link.text() is link_text
+		if link.innerHTML is link_text
+			link = $(link)
 			link.remove()
 
 	for option in add_link_choices
-		console.log option
 		if option.innerHTML is link_text
 			option = $(option)
 			option.remove()
