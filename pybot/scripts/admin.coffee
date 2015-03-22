@@ -1,15 +1,3 @@
-show_message = (message, error=false, parent='body') ->
-	if $('#message_div')?
-		$('#message_div').remove()
-
-	message_div = $('<div id="message_div"></div>')
-	message_div.append "<p>#{message}</p>"
-
-	if error
-		message_div.css 'color', 'red'
-
-	$(parent).append message_div
-
 add_link = (link_text, url) ->
 	new_link = "<li><a href='#{url}'>#{link_text}</a></li>"
 	$('.links_list').append new_link
@@ -47,10 +35,10 @@ $(document).ready () ->
 		jqxhr = $.post form_action_url + '?asjson=true', payload
 		jqxhr.done (data) =>
 			if data['status'] is 'success'
-				show_message data['message']
+				window.helpers.show_message data['message']
 				add_link link_text, $('#endpoint_choice').text() + variable
 			else
-				show_message data['message'], error=true
+				window.helpers.show_message data['message'], error=true
 
 	$('#remove_link_form').submit (event) ->
 		event.preventDefault()
@@ -62,7 +50,7 @@ $(document).ready () ->
 		jqxhr = $.post form_action_url + '?asjson=true', payload
 		jqxhr.done (data) =>
 			if data['status'] is 'success'
-				show_message data['message']
+				window.helpers.show_message data['message']
 				remove_link link_text
 			else
-				show_message data['message'], error=true
+				window.helpers.show_message data['message'], error=true
