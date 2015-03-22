@@ -9,24 +9,28 @@
 {% block header %}PyBot Administration{% endblock %}
 
 {% block content %}
-{% set form = forms['links'] %}
-<div id="manage_links">
-<form id="add_link_form" action="{{ url_for('add_link') }}">
-{{ form.link_text.label }}: {{ form.link_text() }}
-<br>
-{{ form.endpoint_choice.label }}: {{ form.endpoint_choice() }}
-<br>
-{{ form.variable.label }}: {{ form.variable() }}
-<br>
-<input type="submit" value="add link">
-</form>
 
-{% set form = forms['remove_links'] %}
+<div id="admin_content">
+	<div id="manage_links" class="admin_panel">
+		{% set form = forms['links'] %}
+		<form id="add_link_form" action="{{ url_for('add_link') }}">
+		{{ form.link_text.label }}: {{ form.link_text() }}
+		<br>
+		{{ form.endpoint_choice.label }}: {{ form.endpoint_choice() }}
+		<br>
+		{{ form.variable.label }}: {{ form.variable() }}
+		<br>
+		<input type="submit" value="add link">
+		</form>
 
-<form id="remove_link_form" action="{{ url_for('remove_link') }}">
-{{ form.remove_link_choice.label }}: {{ form.remove_link_choice() }}
-<br>
-<input type="submit" value="remove link">
+		{% set form = forms['remove_links'] %}
+
+		<form id="remove_link_form" action="{{ url_for('remove_link') }}">
+		{{ form.remove_link_choice.label }}: {{ form.remove_link_choice() }}
+		<br>
+		<input type="submit" value="remove link">
+		</form>
+	</div>
 </div>
 
 {% endblock %}
