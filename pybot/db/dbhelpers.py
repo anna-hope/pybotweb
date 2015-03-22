@@ -33,6 +33,8 @@ def get_user(userid=None, email=None, first_name=None, last_name=None) -> User:
         f = partial(User.query.filter_by, first_name=first_name)
     elif last_name:
          f = partial(User.query.filter_by, last_name=last_name)
+    else:
+        return None
 
     return f().first()
 
