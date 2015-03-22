@@ -28,16 +28,15 @@ def login():
 			user = load_user(email)
 			login_user(user)
 			flash('Hi, {}!'.format(user.first_name))
+			message = {'status': 'success', 'message': 'Hi, {}'.format(user.first_name)}
 			if request.args.get('asjson'):
-				return helpers.make_json_message(
-					'success', 'Hi, {}'.format(user.first_name))
+				return helpers.make_json_message(**message)
 			return redirect(url_for('home'))
 		else:
 			error = 'The login data you provided did not work :('
 			# move this to the strings file
 			if request.args.get('asjson'):
-				return helpers.make_json_message(
-						'error', 'the login data you gave did not work :(')
+				return helpers.make_json_message('error', error)
 	return render_template('login.html', form=form, error=error)
 	
 @app.route('/logout/')
