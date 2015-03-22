@@ -17,7 +17,9 @@
 <form id="login_form" action="{{ url_for('login') }}" method="POST">
 	{{ form.email.label }}: {{ form.email() }}
 	<br>
+	<div id="login_password_div" style="">
 	{{ form.password.label }}: {{ form.password() }}
+	</div>
 	<br>
 	<input type="submit" value="log in">
 </form>
