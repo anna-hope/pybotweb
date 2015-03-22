@@ -65,6 +65,13 @@ input
 	margin-right: auto; 
 }
 
+#message_div
+{
+	text-align: center;
+	font-size: 1.5em;
+	font-family: 'Signika', arial, Sans-Serif;
+}
+
 /* links */
 
 ul.links_list
