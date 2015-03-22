@@ -16,14 +16,14 @@ class LinkForm(PybotForm):
 		(validators.InputRequired(message='please enter the text'), 
 		validators.Length(max=20)))
 	# update to use only selectable endpoints
-	url = SelectField('Link', (validators.InputRequired(),))
+	endpoint_choice = SelectField('Endpoint', (validators.InputRequired(),))
 	variable = StringField('Subpage')
 
 	# hacky way of adding it to forms
 	forms['links'] = __qualname__
 
 class RemoveLinkForm(PybotForm):
-	link = SelectField('Link', validators=(
+	remove_link_choice = SelectField('Link', validators=(
 			validators.InputRequired(message='please select a link'),))
 	forms['remove_links'] = __qualname__
 
@@ -35,8 +35,10 @@ def admin(section=None):
 	forms_dict = {key: eval(value)() for key, value in forms.items()}
 
 	# add choices to forms
-	forms_dict['links'].url.choices = ((e, e) for e in app.config['LINKABLE_ENDPOINTS'])
-	forms_dict['remove_links'].link.choices = ((link.text, link.text) for link in dbhelpers.get_links())
+	forms_dict['links'].endpoint_choice.choices = (
+		(e, url_for(e)) for e in app.config['LINKABLE_ENDPOINTS'])
+	forms_dict['remove_links'].remove_link_choice.choices = (
+		(link.text, link.text) for link in dbhelpers.get_links())
 
 	return render_template('admin.html', forms=forms_dict)
 
@@ -44,12 +46,13 @@ def admin(section=None):
 @login_required
 def add_link():
 	link_form = LinkForm(request.form)
-	link_form.url.choices = [(e, e) for e in app.config['LINKABLE_ENDPOINTS']]
+	link_form.endpoint_choice.choices = (
+			(e, url_for(e)) for e in app.config['LINKABLE_ENDPOINTS'])
 	if link_form.validate():
 		link_text = link_form.link_text.data
-		url = link_form.url.data
+		endpoint_choice = link_form.endpoint_choice.data
 		variable = link_form.variable.data
-		dbhelpers.add_link(link_text, url, variable)
+		dbhelpers.add_link(link_text, endpoint_choice, variable)
 		if request.args.get('asjson'):
 			return helpers.make_json_message('success', 
 							'link {} was added successfully'.format(link_text))
@@ -62,9 +65,10 @@ def add_link():
 @login_required
 def remove_link():
 	remove_link_form = RemoveLinkForm(request.form)
-	remove_link_form.link.choices = ((link.text, link.text) for link in dbhelpers.get_links())
-	if request.method == 'POST' and remove_link_form.validate():
-		link_text = remove_link_form.link.data
+	remove_link_form.remove_link_choice.choices = (
+		(link.text, link.text) for link in dbhelpers.get_links())
+	if remove_link_form.validate():
+		link_text = remove_link_form.remove_link_choice.data
 		if dbhelpers.remove_link(link_text):
 			status = 'success'
 			message = 'link {} was removed'.format(link_text)

@@ -14,7 +14,7 @@
 <form id="add_link_form" action="{{ url_for('add_link') }}">
 {{ form.link_text.label }}: {{ form.link_text() }}
 <br>
-{{ form.url.label }}: {{ form.url() }}
+{{ form.endpoint_choice.label }}: {{ form.endpoint_choice() }}
 <br>
 {{ form.variable.label }}: {{ form.variable() }}
 <br>
@@ -24,7 +24,7 @@
 {% set form = forms['remove_links'] %}
 
 <form id="remove_link_form" action="{{ url_for('remove_link') }}">
-{{ form.link.label }}: {{ form.link() }}
+{{ form.remove_link_choice.label }}: {{ form.remove_link_choice() }}
 <br>
 <input type="submit" value="remove link">
 </div>
