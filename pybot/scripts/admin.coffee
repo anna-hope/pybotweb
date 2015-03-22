@@ -8,8 +8,8 @@ remove_link = (link_text) ->
 	add_link_choices = $('#remove_link_choice').children()
 
 	for link in links
-		if link.innerHTML is link_text
-			link = $(link)
+		link = $(link)
+		if link.text() is link_text
 			link.remove()
 
 	for option in add_link_choices
@@ -22,35 +22,29 @@ $(document).ready () ->
 
 	$('#add_link_form').submit (event) ->
 		event.preventDefault()
-		form_action_url = $(event.target).attr 'action'
+		form = $(event.target)
 
-		link_text = $('#link_text').val()
-		endpoint = $('#endpoint_choice').val()
-		variable = $('#variable').val()
-		payload =
-			link_text: link_text
-			endpoint_choice: endpoint
-			variable: variable
+		post = window.helpers.post_form form
+		post.done (result) ->
+			switch result['status']
+				when 'success'
+					link_text = $('#link_text').val()
+					window.helpers.show_message "link #{link_text} added"
+					add_link link_text, $('#endpoint_choice').val() + $('#variable').val()
+				when 'error'
+					window.helpers.show_message result['message'], error=true
 
-		jqxhr = $.post form_action_url + '?asjson=true', payload
-		jqxhr.done (data) =>
-			if data['status'] is 'success'
-				window.helpers.show_message data['message']
-				add_link link_text, $('#endpoint_choice').text() + variable
-			else
-				window.helpers.show_message data['message'], error=true
 
 	$('#remove_link_form').submit (event) ->
 		event.preventDefault()
-		form_action_url = $(event.target).attr 'action'
+		form = $(event.target)
 
-		link_text = $('#remove_link_choice').val()
-		payload = {remove_link_choice: link_text}
-
-		jqxhr = $.post form_action_url + '?asjson=true', payload
-		jqxhr.done (data) =>
-			if data['status'] is 'success'
-				window.helpers.show_message data['message']
-				remove_link link_text
-			else
-				window.helpers.show_message data['message'], error=true
+		post = window.helpers.post_form form
+		post.done (result) =>
+			switch result['status']
+				when 'success'
+					link_text = $('#remove_link_choice option:selected').text()
+					window.helpers.show_message result['message']
+					remove_link link_text
+				when 'error'
+					window.helpers.show_message result['message'], error=true
