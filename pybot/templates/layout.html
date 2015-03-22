@@ -5,15 +5,16 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
 	<meta name="description" content="UChicago PyBot project website">
 	<meta name="keywords" content="pybot,programming,python,arduino,robotics,teaching,schools,children,middle school,college,uchicago,chicago">
 	<meta name="author" content="Anton Melnikov (University of Chicago)">
 
+	<title>{{ config['SITE_TITLE'] }}</title>
+
 	<link href="{{ url_for('static', filename='style.css') }}" rel='stylesheet' type='text/css'>
 
 	{% block fonts %}
-	<link href='http://fonts.googleapis.com/css?family=Overlock|Signika&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Signika&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	{% endblock %}
 
 	<script type="text/javascript">
