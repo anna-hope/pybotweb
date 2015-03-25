@@ -5,3 +5,4 @@ click
 coffeescript
 uwsgi
 wtforms>=2.0
+awesome-slugify
