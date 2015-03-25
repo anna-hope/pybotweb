@@ -1,6 +1,7 @@
 from enum import IntEnum
 
 from pybot import app
+from pybot.db import dbhelpers
 from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
@@ -46,15 +47,40 @@ class User(db.Model):
 
 class Page(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	title = db.Column(db.Text)
-	content = db.Column(db.Text)
+	title = db.Column(db.String(100), unique=True)
+	content_markdown = db.Column(db.Text)
+	content_html = db.Column(db.Text)
+	slug = db.Column(db.String(100), unique=True)
 
-	def __init__(self, title: str, content: str):
+	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+	category = db.Relationship('Category', backref=db.backref('pages', lazy='dynamic'))
+
+	def __init__(self, title: str, content_markdown: str, content_html: str, slug: str,
+					category: Category=None):
 		self.title = title
-		self.content = content
+		self.content_markdown = content_markdown
+		self.content_html = content_html
+		self.slug = slug
+		if category
+			self.category = category
+		else:
+			self.category = Category('Main')
 
 	def __repr__(self):
 		return 'Page {}'.format(self.title)
+
+class Category(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	title = db.Column(db.Text(50), unique=True)
+	slug = db.Column(db.Text(50), unique=True)
+
+	def __init__(self, title: str, slug: str):
+		self.title = title
+		self.slug = slug
+
+	def __repr__(self):
+		return 'Page Category {}'.format(self.title)
+
 
 class MessageType(IntEnum):
 	header = 1

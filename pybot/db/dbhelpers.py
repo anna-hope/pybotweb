@@ -1,5 +1,5 @@
 from functools import partial
-from pybot.db.dbmodel import (db, User, Page, 
+from pybot.db.dbmodel import (db, User, Page, Category, 
                                 Message, MessageType,
                                 Link)
 
@@ -18,6 +18,8 @@ def add_to_db(obj: db.Model) -> bool:
 def remove_from_db(obj: db.Model):
    db.session.delete(obj)
    db.session.commit()
+
+# users
 
 def create_user(email=None, first_name=None, last_name=None, password=None) -> bool:
     new_user = User(email, first_name, last_name)
@@ -51,27 +53,52 @@ def delete_user(email: str):
     user = get_user(email=email)
     remove_from_db(user)
 
-def create_page(title: str, content: str):
-    new_page = Page(title, content)
+# pages 
+
+def get_page_slugs():
+    for page in Page.query.all():
+        yield page.slug
+
+def create_page(slug: str, content: str):
+    # TODO: complete
+    new_page = Page(slug, content)
     add_to_db(new_page)
 
-def get_page(title: str) -> Page:
-    page = Page.query.filter_by(title=title).first()
-    return page 
+def get_page(slug: str) -> Page:
+    try:
+        page = Page.query.filter_by(slug=slug).first()
+    except NoResultFound:
+        page = None
+    return page
 
-def change_page(title: str, **kwargs):
-    page = get_page(title)
+def get_all_pages() -> [Page]:
+    return Page.query.all()
+
+def modify_page(slug: str, **kwargs):
+    page = get_page(slug)
     if 'new_title' in kwargs:
-        page.title = kwargs['new_title']
+        page.slug = kwargs['new_title']
         del kwargs['new_title']
     for k, v in kwargs.items():
         page.__setattr__(k, v)
     db.session.commit()       
 
-def delete_page(title: str):
-    page = get_page(title)
+def delete_page(slug: str):
+    page = get_page(slug)
     remove_from_db(page)
 
+# page categories
+
+def get_page_category(slug: str):
+    try:
+        return Category.query.filter_by(slug=slug).first()
+    except NoResultFound:
+        return None
+
+def get_all_page_categories() -> [Category]:
+    return Category.query.all()
+
+# header
 
 def get_header() -> Message:
     try:
@@ -91,6 +118,8 @@ def set_header(text: str):
         new_header = Message(MessageType.header, text)
         add_to_db(new_header)
 
+# footer
+
 def get_footer() -> Message:
     try:
         footer = Message.query.filter_by(
@@ -108,6 +137,8 @@ def set_footer(text: str) -> bool:
     else:
         new_footer = Message(MessageType.footer, text)
         return add_to_db(new_footer)
+
+# links
 
 def add_link(text: str, endpoint='', variable='') -> bool:
     new_link = Link(text, endpoint, variable)
