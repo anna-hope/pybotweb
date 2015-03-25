@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% if category %}
+{% set categories = page %}
+<ul id="category_list">
+	{% for category in categories %}
+	<li class="category_item">
+	<a href="{{ url_for('pages') + category.slug }}">{{ category.title }}</a>
+	</li>
+	<ul class="subpage_list">
+		{% for p in category %}
+		<li class="page_item">
+		<a href="{{ url_for('pages') + category.slug + p.slug }}" class="page_link">{{ p.title }}</a>
+		</li>
+		{% endfor %}
+	</ul>
+	{% endfor %}
+</ul>
+
+{% else %}
+<h2 class="page_title">{{ page.title }}</h2>
+{{ page.content | safe }}
+
+{% endif %}
+
+{% endblock %}
