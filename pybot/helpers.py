@@ -2,10 +2,9 @@ from pybot import app
 from pybot.db import dbhelpers
 
 from flask import jsonify
-from slugify import Slugify
+from slugify import UniqueSlugify
 
 _slugify = UniqueSlugify()
-_slugify.uids = set(dbhelpers.get_page_slugs())
 
 def make_json_message(status: str, message: str, **kwargs) -> 'json':
 	message = {'status': status, 'message': message}
@@ -20,4 +19,5 @@ def linkable(func):
 	return func
 
 def slugify(title: str) -> str:
+	_slugify.uids = set(pybot.db.dbhelpers.get_page_slugs())
 	return _slugify(title)
