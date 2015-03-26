@@ -1,7 +1,6 @@
 from enum import IntEnum
 
 from pybot import app
-from pybot.db import dbhelpers
 from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
@@ -53,18 +52,16 @@ class Page(db.Model):
 	slug = db.Column(db.String(100), unique=True)
 
 	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-	category = db.Relationship('Category', backref=db.backref('pages', lazy='dynamic'))
+	category = db.relationship('Category', backref=db.backref('pages', lazy='dynamic'))
 
-	def __init__(self, title: str, content_markdown: str, content_html: str, slug: str,
-					category: Category=None):
+	def __init__(self, title: str, slug: str,
+					content_markdown: str, content_html: str,
+					category):
 		self.title = title
 		self.content_markdown = content_markdown
 		self.content_html = content_html
 		self.slug = slug
-		if category
-			self.category = category
-		else:
-			self.category = Category('Main')
+		self.category = category
 
 	def __repr__(self):
 		return 'Page {}'.format(self.title)
