@@ -47,8 +47,8 @@ def run_production(host, port):
     app.run(host=host, port=port)
 
 def run_debug(host, port, straightcoffee=False):
-    load_app()
     app.config.from_object('config.DebugConfig')
+    load_app()
 
     if straightcoffee:
         app.config['STRAIGHTCOFFEE'] = True
