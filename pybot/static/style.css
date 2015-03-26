@@ -111,8 +111,17 @@ ul.links_list li
 	color: red;
 }
 
-/* admin */
+/* pages */
 
+#new_page_content
+{
+	min-width: 15em;
+	min-height: 10em;
+	font-family: 'Signika', Arial, Sans-Serif;
+	font-size: 1em;
+}
+
+/* admin */ 
 
 
 /* play area */
