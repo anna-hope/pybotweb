@@ -1,3 +1,5 @@
+import pybot.helpers
+
 from functools import partial
 from pybot.db.dbmodel import (db, User, Page, Category, 
                                 Message, MessageType,
@@ -5,6 +7,7 @@ from pybot.db.dbmodel import (db, User, Page, Category,
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
+import mistune
 
 def add_to_db(obj: db.Model) -> bool:
     db.session.add(obj)
@@ -59,14 +62,22 @@ def get_page_slugs():
     for page in Page.query.all():
         yield page.slug
 
-def create_page(slug: str, content: str):
-    # TODO: complete
-    new_page = Page(slug, content)
-    add_to_db(new_page)
+def create_page(title: str, content_markdown: str, category_title='Main'):
+    content_html = mistune.markdown(content_markdown)
+    slug = pybot.helpers.slugify(title)
+    category = get_page_category(title=category_title)
+    if not category:
+        category = create_category(category_title)
+    new_page = Page(title, slug, content_markdown, content_html, category)
+    if add_to_db(new_page):
+        return {'title': title, 'slug': slug}
+    else:
+        return None
 
-def get_page(slug: str) -> Page:
+def get_page(slug: str, title: str) -> Page:
+    query = {'slug': slug} if slug else {'title': title}
     try:
-        page = Page.query.filter_by(slug=slug).first()
+        page = Page.query.filter_by(**{query}).first()
     except NoResultFound:
         page = None
     return page
@@ -89,9 +100,21 @@ def delete_page(slug: str):
 
 # page categories
 
-def get_page_category(slug: str):
+def create_category(title: str):
+    slug = pybot.helpers.slugify(title)
+    new_category = Category(title, slug)
+    if add_to_db(new_category):
+        return {'title': title, 'slug': slug}
+    else:
+        return None
+
+def get_page_category(slug=None, title=None):
+    if slug:
+        query = {'slug': slug}
+    else:
+        query = {'title': title}
     try:
-        return Category.query.filter_by(slug=slug).first()
+        return Category.query.filter_by(**{query}).first()
     except NoResultFound:
         return None
 
