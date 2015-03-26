@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if category %}
+{% if mode == 'category' %}
 {% set categories = page %}
 <ul id="category_list">
 	{% for category in categories %}
@@ -19,9 +19,26 @@
 	{% endfor %}
 </ul>
 
-{% else %}
+{% elif mode == 'page' %}
 <h2 class="page_title">{{ page.title }}</h2>
 {{ page.content | safe }}
+
+{% elif mode == 'new_page' %}
+<div id="add_page">
+<form id="add_page_form">
+{{ form.page_title.label }}: {{ form.page_title() }}
+<br>
+{{ form.page_category.label }}: {{ form.page_category() }}
+<br>
+<div id="new_category_field" style="display: none;">
+{{ form.new_page_category.label }}: {{ form.new_page_category() }}
+</div>
+<br>
+{{ form.new_page_content.label }}: <br> {{ form.new_page_content() }}
+<br>
+<input type="submit" value="create new page">
+</form>
+</div>
 
 {% endif %}
 
