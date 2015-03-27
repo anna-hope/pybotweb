@@ -4,6 +4,7 @@ from pybot.db import dbhelpers
 
 from flask import render_template, jsonify, request
 from wtforms import Form, StringField, TextAreaField, SelectField, validators
+from flask.ext.login import login_required
 
 class NewPageForm(Form):
 	page_title = StringField('title', (validators.required(), 
@@ -51,6 +52,7 @@ def render_subpage(category, slug):
 	...
 
 @app.route('/pages/add_new/', methods=('GET', 'POST'))
+@login_required
 def add_new_page():
 	if request.method == 'GET':
 		new_page_form = NewPageForm()
