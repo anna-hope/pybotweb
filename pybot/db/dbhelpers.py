@@ -109,10 +109,7 @@ def create_category(title: str):
         return None
 
 def get_page_category(slug=None, title=None):
-    if slug:
-        query = {'slug': slug}
-    else:
-        query = {'title': title}
+    query = {'slug': slug} if slug else {'title': title}
     try:
         return Category.query.filter_by(**{query}).first()
     except NoResultFound:
