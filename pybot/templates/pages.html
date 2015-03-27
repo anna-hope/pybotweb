@@ -1,5 +1,10 @@
 {% extends 'layout.html' %}
 
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='scripts/pages.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
 {% if mode == 'category' %}
@@ -7,12 +12,12 @@
 <ul id="category_list">
 	{% for category in categories %}
 	<li class="category_item">
-	<a href="{{ url_for('pages') + category.slug }}">{{ category.title }}</a>
+	<a href="{{ url_for('render_page') + category.slug }}">{{ category.title }}</a>
 	</li>
 	<ul class="subpage_list">
-		{% for p in category %}
+		{% for p in category.pages.all() %}
 		<li class="page_item">
-		<a href="{{ url_for('pages') + category.slug + p.slug }}" class="page_link">{{ p.title }}</a>
+		<a href="{{ url_for('render_page') + p.slug }}" class="page_link">{{ p.title }}</a>
 		</li>
 		{% endfor %}
 	</ul>
@@ -21,11 +26,11 @@
 
 {% elif mode == 'page' %}
 <h2 class="page_title">{{ page.title }}</h2>
-{{ page.content | safe }}
+{{ page.content_html | safe }}
 
 {% elif mode == 'new_page' %}
 <div id="add_page">
-<form id="add_page_form">
+<form id="add_page_form" action="{{ url_for('add_new_page') }}" method="POST">
 {{ form.page_title.label }}: {{ form.page_title() }}
 <br>
 {{ form.page_category.label }}: {{ form.page_category() }}
@@ -36,6 +41,7 @@
 <br>
 {{ form.new_page_content.label }}: <br> {{ form.new_page_content() }}
 <br>
+<a class="preview_button">preview</a>
 <input type="submit" value="create new page">
 </form>
 </div>
