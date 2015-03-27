@@ -1,9 +1,8 @@
-import pybot.helpers
-
 from functools import partial
-from pybot.db.dbmodel import (db, User, Page, Category, 
-                                Message, MessageType,
-                                Link)
+from ..db.dbmodel import (db, app,
+                            User, Page, Category, 
+                            Message, MessageType,
+                            Link)
 
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
@@ -62,22 +61,22 @@ def get_page_slugs():
     for page in Page.query.all():
         yield page.slug
 
-def create_page(title: str, content_markdown: str, category_title='Main'):
-    content_html = mistune.markdown(content_markdown)
-    slug = pybot.helpers.slugify(title)
+def create_new_page(title: str, slug: str, content_markdown: str,
+                 content_html: str, category_title: str):
     category = get_page_category(title=category_title)
     if not category:
-        category = create_category(category_title)
+        category_slug = create_category(category_title)['slug']
+        category = get_page_category(slug=category_slug)
     new_page = Page(title, slug, content_markdown, content_html, category)
     if add_to_db(new_page):
         return {'title': title, 'slug': slug}
     else:
         return None
 
-def get_page(slug: str, title: str) -> Page:
+def get_page(slug: str=None, title: str=None) -> Page:
     query = {'slug': slug} if slug else {'title': title}
     try:
-        page = Page.query.filter_by(**{query}).first()
+        page = Page.query.filter_by(**query).first()
     except NoResultFound:
         page = None
     return page
@@ -101,7 +100,12 @@ def delete_page(slug: str):
 # page categories
 
 def create_category(title: str):
-    slug = pybot.helpers.slugify(title)
+    # hack (refactor later)
+    from pybot.helpers import slugify
+    if not title:
+        title = app.config['DEFAULT_CATEGORY_NAME']
+
+    slug = slugify(title)
     new_category = Category(title, slug)
     if add_to_db(new_category):
         return {'title': title, 'slug': slug}
@@ -111,7 +115,7 @@ def create_category(title: str):
 def get_page_category(slug=None, title=None):
     query = {'slug': slug} if slug else {'title': title}
     try:
-        return Category.query.filter_by(**{query}).first()
+        return Category.query.filter_by(**query).first()
     except NoResultFound:
         return None
 
@@ -177,4 +181,3 @@ def remove_link(text: str) -> bool:
         return False
     remove_from_db(link)
     return True
-
