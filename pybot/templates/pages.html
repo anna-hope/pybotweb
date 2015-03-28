@@ -26,7 +26,9 @@
 
 {% elif mode == 'page' %}
 <h2 class="page_title">{{ page.title }}</h2>
+<article class="pybot_page">
 {{ page.content_html | safe }}
+</article>
 
 {% elif mode == 'new_page' %}
 <div id="add_page">
