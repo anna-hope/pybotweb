@@ -46,11 +46,34 @@ $(document).ready () ->
 		form = $(event.target)
 
 		post = window.helpers.post_form form
-		post.done (result) =>
+		post.done (result) ->
 			switch result['status']
 				when 'success'
 					link_text = $('#remove_link_choice option:selected').text()
 					window.helpers.show_message result['message']
 					remove_link link_text
+				when 'error'
+					window.helpers.show_message result['message'], error=true
+
+	$('#change_header_form').submit (event) ->
+		event.preventDefault()
+		form = $(event.target)
+
+		post = window.helpers.post_form form
+		post.done (result) ->
+			switch result['status']
+				when 'success' then window.helpers.show_message result['message']
+				when 'error' then window.helpers.show_message result['message'], error=true
+
+	$('#change_footer_form').submit (event) ->
+		event.preventDefault()
+		form = $(event.target)
+
+		post = window.helpers.post_form form
+		post.done (result) ->
+			switch result['status']
+				when 'success'
+					$('footer').empty()
+					$('footer').append "<p>#{$('#new_footer_text').val()}</p>"
 				when 'error'
 					window.helpers.show_message result['message'], error=true
