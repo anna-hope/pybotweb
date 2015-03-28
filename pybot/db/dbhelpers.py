@@ -138,9 +138,10 @@ def set_header(text: str):
         Message.query.filter_by(
                             message_type=MessageType.header).update({Message.text: text})
         db.session.commit()
+        return True
     else:
         new_header = Message(MessageType.header, text)
-        add_to_db(new_header)
+        return add_to_db(new_header)
 
 # footer
 
@@ -158,6 +159,7 @@ def set_footer(text: str) -> bool:
         Message.query.filter_by(
                             message_type=MessageType.footer).update({Message.text: text})
         db.session.commit()
+        return True
     else:
         new_footer = Message(MessageType.footer, text)
         return add_to_db(new_footer)
