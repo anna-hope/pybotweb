@@ -20,6 +20,12 @@ remove_link = (link_text) ->
 
 $(document).ready () ->
 
+	$('div.admin_panel').hide()
+
+	$('a.admin_panel_link').click (event) ->
+		form_name = $(event.target).attr 'data-form'
+		$('#' + form_name).toggle 100
+
 	$('#add_link_form').submit (event) ->
 		event.preventDefault()
 		form = $(event.target)
