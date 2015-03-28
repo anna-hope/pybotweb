@@ -22,6 +22,9 @@ def get_result_message(pred: bool, success_msg: str, failure_msg: str,
 	else:
 		return result_tuple(failure_status, failure_msg)
 
+def form_error_message(form):
+	return make_json_message('error', 'invalid form data', errors=form.errors)
+
 def linkable(func):
 	try:
 		app.config['LINKABLE_ENDPOINTS'].append(func.__qualname__)
