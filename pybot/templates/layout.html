@@ -40,8 +40,9 @@
 	{% if current_user.is_authenticated() %}
 		<div id="user_panel">
 		{{ 'Hello, {}'.format(current_user.first_name) }}
-		<a href={{ url_for('admin') | tojson }}>admin</a>
-		<a href={{ url_for('logout') | tojson }}>log out</a>
+		<a class="user_link" href={{ url_for('admin') | tojson }}>admin</a>
+		<a class="user_link" href={{ url_for('add_new_page') }} | tojson }}>add new page</a>
+		<a class="user_link" href={{ url_for('logout') | tojson }}>log out</a>
 		</div>
 	{% endif %}
 
