@@ -28,8 +28,18 @@ class RemoveLinkForm(PybotForm):
 	forms['remove_links'] = __qualname__
 
 
+class HeaderForm(PybotForm):
+	new_header_text = StringField('Header', (validators.InputRequired(),
+												validators.Length(min=5, max=10)))
+	forms['header_form'] = __qualname__
+
+class FooterForm(PybotForm):
+	new_footer_text = StringField('Footer')
+	forms['footer_form'] = __qualname__
+
+
 @app.route('/admin/')
-@app.route('/admin/<section>')
+@app.route('/admin/<section>/')
 @login_required
 def admin(section=None):
 	forms_dict = {key: eval(value)() for key, value in forms.items()}
@@ -82,6 +92,3 @@ def remove_link():
 	if request.args.get('asjson'):
 		return helpers.make_json_message(status, message)
 	return redirect(url_for('admin'))
-
-
-
