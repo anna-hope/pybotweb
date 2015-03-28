@@ -1,15 +1,26 @@
+from collections import namedtuple
+
 from pybot import app
 from pybot.db import dbhelpers
 
 from flask import jsonify
 from slugify import UniqueSlugify
+import mistune
 
 _slugify = UniqueSlugify(to_lower=True)
+result_tuple = namedtuple('Result', ('status', 'message'))
 
 def make_json_message(status: str, message: str, **kwargs) -> 'json':
 	message = {'status': status, 'message': message}
 	message.update(kwargs)
 	return jsonify(message)
+
+def get_result_message(pred: bool, success_msg: str, failure_msg: str,
+					success_status='success', failure_status='error') -> result_tuple:
+	if pred:
+		return result_tuple(success_status, success_msg)
+	else:
+		return result_tuple(failure_status, failure_msg)
 
 def linkable(func):
 	try:
@@ -19,5 +30,9 @@ def linkable(func):
 	return func
 
 def slugify(title: str) -> str:
-	_slugify.uids = set(dbhelpers.get_page_slugs())
+	if len(_slugify.uids) is 0:
+		_slugify.uids = set(dbhelpers.get_page_slugs())
 	return _slugify(title)
+
+def htmlify(text: str):
+	return mistune.markdown(text)
