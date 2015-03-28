@@ -1,6 +1,20 @@
 {% extends 'layout.html' %}
 {# {# from 'forms.html' import input #} #}
 
+{% macro make_form(name, caption, endpoint, form) -%}
+<a class="admin_panel_link" data-form="{{ name }}">{{ caption }}</a>
+<div id="{{ name }}" class="admin_panel">
+<form id="{{ '{}_form'.format(name) }}" action="{{ url_for(endpoint) }}" method="POST">
+{% for field in form %}
+{{ field.label }}: {{ field() }}
+<br>
+{% endfor %}
+<input type="submit" form="{{ '{}_form'.format(name) }}" value="submit">
+</form>
+</div>
+{%- endmacro %}
+
+
 {% block scripts %}
 {{ super() }}
 <script src="{{ url_for('static', filename='scripts/admin.js') }}"></script>
@@ -11,27 +25,14 @@
 {% block content %}
 
 <div id="admin_content">
-	<div id="manage_links" class="admin_panel">
-		{% set form = forms['links'] %}
-		<form id="add_link_form" action="{{ url_for('add_link') }}">
-		{{ form.link_text.label }}: {{ form.link_text() }}
-		<br>
-		{{ form.endpoint_choice.label }}: {{ form.endpoint_choice() }}
-		<br>
-		{{ form.variable.label }}: {{ form.variable() }}
-		<br>
-		<input type="submit" value="add link">
-		</form>
-		
-		<br>
-		{% set form = forms['remove_links'] %}
 
-		<form id="remove_link_form" action="{{ url_for('remove_link') }}">
-		{{ form.remove_link_choice.label }}: {{ form.remove_link_choice() }}
-		<br>
-		<input type="submit" value="remove link">
-		</form>
-	</div>
+	{{ make_form('add_link', 'add a link', 'add_link', forms['links']) }}
+	<br>
+	{{ make_form('remove_link', 'remove links', 'remove_link', forms['remove_links']) }}
+	<br>
+
+	{# add stuf for header and footer #}
+
 </div>
 
 {% endblock %}
