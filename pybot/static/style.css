@@ -2,7 +2,7 @@ body
 {
 	max-height: auto;
 	max-width: auto;
-	background-color: #fffdfa;
+	background-color: #fffdfc;
 }
 
 #content
@@ -29,7 +29,7 @@ header
 a
 {
 	text-decoration: none;
-	color: #00e5e5;
+	color: #0eb0ff;
 }
 
 a:hover
@@ -42,6 +42,12 @@ a:hover
 a.header_link
 {
 	text-decoration: none;
+}
+
+a.user_link
+{
+	padding-left: 0.2em;
+	padding-right: 0.2em;
 }
 
 footer
