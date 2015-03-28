@@ -25,14 +25,10 @@
 {% block content %}
 
 <div id="admin_content">
-
-	{{ make_form('add_link', 'add a link', 'add_link', forms['links']) }}
-	<br>
-	{{ make_form('remove_link', 'remove links', 'remove_link', forms['remove_links']) }}
-	<br>
-	{{ make_form('change_header', 'change the header', 'change_header', forms['header_form']) }}
-	<br>
-	{{ make_form('change_footer', 'change the footer', 'change_footer', forms['footer_form']) }}
+{% for form in forms %}
+{{ make_form(form.name, form.caption, form.endpoint, form.form) }}
+<br>
+{% endfor %}
 
 </div>
 

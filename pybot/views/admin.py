@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from pybot import app, helpers
 from pybot.db import dbhelpers
 
@@ -6,7 +8,8 @@ from flask.ext.login import login_required
 from wtforms import Form, StringField, SelectField, validators
 from wtforms.validators import ValidationError
 
-forms = {}
+form_names = {}
+form_tuple = namedtuple('PybotForm', ('form', 'name', 'endpoint', 'caption'))
 
 class PybotForm(Form):
 	pass
@@ -20,37 +23,45 @@ class LinkForm(PybotForm):
 	variable = StringField('Subpage')
 
 	# hacky way of adding it to forms
-	forms['links'] = __qualname__
+	form_names['add_link'] = __qualname__
 
 class RemoveLinkForm(PybotForm):
 	remove_link_choice = SelectField('Link', validators=(
 			validators.InputRequired(message='please select a link'),))
-	forms['remove_links'] = __qualname__
+	form_names['remove_link'] = __qualname__
 
 
 class HeaderForm(PybotForm):
 	new_header_text = StringField('Header', (validators.InputRequired(),
 												validators.Length(min=5, max=10)))
-	forms['header_form'] = __qualname__
+	form_names['change_header'] = __qualname__
 
 class FooterForm(PybotForm):
 	new_footer_text = StringField('Footer')
-	forms['footer_form'] = __qualname__
+	form_names['change_footer'] = __qualname__
+
+
+captions = {
+	'add_link': 'add a link',
+	'remove_link': 'remove a link',
+	'change_header': 'change the header',
+	'change_footer': 'change the footer'
+}
 
 
 @app.route('/admin/')
-@app.route('/admin/<section>/')
 @login_required
 def admin(section=None):
-	forms_dict = {key: eval(value)() for key, value in forms.items()}
+	forms_dict = {key: eval(value)() for key, value in form_names.items()}
 
 	# add choices to forms
-	forms_dict['links'].endpoint_choice.choices = (
+	forms_dict['add_link'].endpoint_choice.choices = (
 		(e, url_for(e)) for e in app.config['LINKABLE_ENDPOINTS'])
-	forms_dict['remove_links'].remove_link_choice.choices = (
+	forms_dict['remove_link'].remove_link_choice.choices = (
 		(link.text, link.text) for link in dbhelpers.get_links())
+	forms = (form_tuple(form, k, k, captions[k]) for k, form in sorted(forms_dict.items(), key=lambda i: i[0]))
 
-	return render_template('admin.html', forms=forms_dict)
+	return render_template('admin.html', forms=forms)
 
 @app.route('/add_link/', methods=('POST',))
 @login_required
@@ -79,19 +90,13 @@ def remove_link():
 		(link.text, link.text) for link in dbhelpers.get_links())
 	if remove_link_form.validate():
 		link_text = remove_link_form.remove_link_choice.data
-		if dbhelpers.remove_link(link_text):
-			status = 'success'
-			message = 'link {} was removed'.format(link_text)
-		else:
-			status = 'error'
-			message = 'link {} does not exist'.format(link_text)
+		result = dbhelpers.remove_link(link_text)
+		message = helpers.get_result_message(result,
+					success_msg='link {} was removed'.format(link_text),
+					failure_msg='link {} could not be removed'.format(link_text))
+		return helpers.make_json_message(message)
 	else:
-		status = 'error'
-		message = remove_link_form.errors
-
-	if request.args.get('asjson'):
-		return helpers.make_json_message(status, message)
-	return redirect(url_for('admin'))
+		return helpers.form_error_message(remove_link_form)
 
 @app.route('/change_header/', methods=('POST',))
 @login_required
@@ -105,7 +110,7 @@ def change_header():
 					failure_msg='footer could not be updated')
 		return helpers.make_json_message(*message)
 	else:
-		return helpers.make_json_message('error', 'invalid form')
+		return helpers.form_error_message(header_form)
 
 @app.route('/change_footer/', methods=('POST',))
 @login_required
@@ -119,7 +124,4 @@ def change_footer():
 					failure_msg='footer could not be updated')
 		return helpers.make_json_message(*message)
 	else:
-		return helpers.make_json_message('error', 'invalid form')
-
-
-
+		return helpers.form_error_message(footer_form)
