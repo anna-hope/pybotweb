@@ -92,3 +92,34 @@ def remove_link():
 	if request.args.get('asjson'):
 		return helpers.make_json_message(status, message)
 	return redirect(url_for('admin'))
+
+@app.route('/change_header/', methods=('POST',))
+@login_required
+def change_header():
+	header_form = HeaderForm(request.form)
+	if header_form.validate():
+		header_text = helpers.htmlify(header_form.new_header_text.data)
+		result = dbhelpers.set_header(header_text)
+		message = helpers.get_result_message(result,
+					success_msg='header updated to "{}"'.format(header_text),
+					failure_msg='footer could not be updated')
+		return helpers.make_json_message(*message)
+	else:
+		return helpers.make_json_message('error', 'invalid form')
+
+@app.route('/change_footer/', methods=('POST',))
+@login_required
+def change_footer():
+	footer_form = FooterForm(request.form)
+	if footer_form.validate():
+		footer_text = helpers.htmlify(footer_form.new_footer_text.data)
+		result =  dbhelpers.set_footer(footer_text)
+		message = helpers.get_result_message(result, 
+					success_msg='footer updated to "{}"'.format(footer_text), 
+					failure_msg='footer could not be updated')
+		return helpers.make_json_message(*message)
+	else:
+		return helpers.make_json_message('error', 'invalid form')
+
+
+
