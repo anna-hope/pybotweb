@@ -35,7 +35,7 @@
 </head>
 
 <body>
-	<header><a class="header_link" href="{{ url_for('home') }}">{% block header %}{{ header_message }}{% endblock %}</a></header>
+	<header><a class="header_link" href="{{ url_for('home') }}">{% block header %}{{ header_message | safe }}{% endblock %}</a></header>
 
 	{% if current_user.is_authenticated() %}
 		<div id="user_panel">
@@ -72,7 +72,7 @@
 	{% block content %}{% endblock %}
 	</div>
 
-	<footer>{% block footer %}{{ footer_message }}{% endblock %}</footer>
+	<footer>{% block footer %}{{ footer_message | safe }}{% endblock %}</footer>
 </body>
 
 </html>
