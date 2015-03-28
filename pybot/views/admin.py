@@ -1,4 +1,4 @@
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 
 from pybot import app, helpers
 from pybot.db import dbhelpers
@@ -8,7 +8,7 @@ from flask.ext.login import login_required
 from wtforms import Form, StringField, SelectField, validators
 from wtforms.validators import ValidationError
 
-form_names = {}
+form_names = OrderedDict()
 form_tuple = namedtuple('PybotForm', ('form', 'name', 'endpoint', 'caption'))
 
 class PybotForm(Form):
@@ -52,14 +52,16 @@ captions = {
 @app.route('/admin/')
 @login_required
 def admin(section=None):
-	forms_dict = {key: eval(value)() for key, value in form_names.items()}
+	forms_dict = OrderedDict()
+	for key, value in form_names.items():
+		forms_dict[key] = eval(value)()
 
 	# add choices to forms
 	forms_dict['add_link'].endpoint_choice.choices = (
 		(e, url_for(e)) for e in app.config['LINKABLE_ENDPOINTS'])
 	forms_dict['remove_link'].remove_link_choice.choices = (
 		(link.text, link.text) for link in dbhelpers.get_links())
-	forms = (form_tuple(form, k, k, captions[k]) for k, form in sorted(forms_dict.items(), key=lambda i: i[0]))
+	forms = (form_tuple(form, k, k, captions[k]) for k, form in forms_dict.items())
 
 	return render_template('admin.html', forms=forms)
 
@@ -91,10 +93,10 @@ def remove_link():
 	if remove_link_form.validate():
 		link_text = remove_link_form.remove_link_choice.data
 		result = dbhelpers.remove_link(link_text)
-		message = helpers.get_result_message(result,
+		result_message = helpers.get_result_message(result,
 					success_msg='link {} was removed'.format(link_text),
 					failure_msg='link {} could not be removed'.format(link_text))
-		return helpers.make_json_message(message)
+		return helpers.make_json_message(*result_message)
 	else:
 		return helpers.form_error_message(remove_link_form)
 
@@ -105,10 +107,10 @@ def change_header():
 	if header_form.validate():
 		header_text = helpers.htmlify(header_form.new_header_text.data)
 		result = dbhelpers.set_header(header_text)
-		message = helpers.get_result_message(result,
+		result_message = helpers.get_result_message(result,
 					success_msg='header updated to "{}"'.format(header_text),
 					failure_msg='footer could not be updated')
-		return helpers.make_json_message(*message)
+		return helpers.make_json_message(*result_message)
 	else:
 		return helpers.form_error_message(header_form)
 
@@ -119,9 +121,9 @@ def change_footer():
 	if footer_form.validate():
 		footer_text = helpers.htmlify(footer_form.new_footer_text.data)
 		result =  dbhelpers.set_footer(footer_text)
-		message = helpers.get_result_message(result, 
+		result_message = helpers.get_result_message(result, 
 					success_msg='footer updated to "{}"'.format(footer_text), 
 					failure_msg='footer could not be updated')
-		return helpers.make_json_message(*message)
+		return helpers.make_json_message(*result_message)
 	else:
 		return helpers.form_error_message(footer_form)
