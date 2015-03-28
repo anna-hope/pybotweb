@@ -1,5 +1,13 @@
 {% extends 'layout.html' %}
 
+{% block header %}
+	<p>{{ header_message }}</p>
+{% endblock %}
+
 {% block content %}
 <div id="index_message"><p>{{ content }}</p></div>
+{% endblock %}
+
+{% block footer %}
+	<p>{{ footer_message }}</p>
 {% endblock %}
