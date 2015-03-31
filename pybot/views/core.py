@@ -4,7 +4,7 @@ from pybot.db import dbhelpers
 
 from flask import (render_template, request, redirect, 
 					url_for, flash)
-from flask.ext.login import login_required, login_user, logout_user
+from flask.ext.login import login_required, login_user, logout_user, current_user
 from wtforms import Form, TextField, PasswordField, validators
 
 @app.route('/')
@@ -18,7 +18,11 @@ class LoginForm(Form):
 
 
 @app.route('/login/', methods=('GET', 'POST'))
+@helpers.login_view
 def login():
+	if current_user.is_authenticated():
+		return redirect(url_for('home'))
+
 	error = None
 	form = LoginForm(request.form)
 	if request.method == 'POST':
