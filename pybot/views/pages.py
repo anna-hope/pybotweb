@@ -1,8 +1,10 @@
+from urllib.parse import urljoin
+
 from pybot import app
 from pybot import helpers
 from pybot.db import dbhelpers
 
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request, url_for, redirect
 from wtforms import Form, StringField, TextAreaField, SelectField, validators
 from flask.ext.login import login_required
 
@@ -93,7 +95,7 @@ def add_new_page():
 				return helpers.make_json_message(
 					'success', 'page {} was added'.format(title),
 					**new_page)
-			return 'success'
+			return redirect(urljoin(url_for('render_page'), new_page.get('slug', '')))
 
 		else:
 			if request.args.get('asjson'):
