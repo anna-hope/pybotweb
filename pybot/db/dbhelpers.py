@@ -62,7 +62,7 @@ def get_page_slugs():
         yield page.slug
 
 def create_new_page(title: str, slug: str, content_markdown: str,
-                 content_html: str, category_title: str):
+                 content_html: str, category_title: str) -> {}:
     category = get_page_category(title=category_title)
     if not category:
         category_slug = create_category(category_title)['slug']
