@@ -35,44 +35,47 @@
 </head>
 
 <body>
-	<header><a class="header_link" href="{{ url_for('home') }}">{% block header %}{{ header_message | safe }}{% endblock %}</a></header>
+	<div id="wrapper">
+		<header><a class="header_link" href="{{ url_for('home') }}">{% block header %}{{ header_message | safe }}{% endblock %}</a></header>
 
-	{% if current_user.is_authenticated() %}
-		<div id="user_panel">
-		{{ 'Hello, {}'.format(current_user.first_name) }}
-		<a class="user_link" href={{ url_for('admin') | tojson }}>admin</a>
-		<a class="user_link" href={{ url_for('add_new_page') }} | tojson }}>add new page</a>
-		<a class="user_link" href={{ url_for('logout') | tojson }}>log out</a>
-		</div>
-	{% endif %}
-
-	{% block flashed_messages %}
-	{% with messages = get_flashed_messages() %}
-		{% if messages %}
-		<ul class="flashed_messages">
-		{% for message in messages %}
-			<li>{{ message }}</li>
-		{% endfor %}
+		{% if current_user.is_authenticated() %}
+			<div id="user_panel">
+			{{ 'Hello, {}'.format(current_user.first_name) }}
+			<a class="user_link" href={{ url_for('admin') | tojson }}>admin</a>
+			<a class="user_link" href={{ url_for('add_new_page') }} | tojson }}>add new page</a>
+			<a class="user_link" href={{ url_for('logout') | tojson }}>log out</a>
+			</div>
 		{% endif %}
-	{% endwith %}
-	{% endblock %}
 
-	<div id="links">
-	{% block links %}
-		<ul class="links_list">
-		{% for link in links %}
-		<li><a href="{{ link['url'] }}">{{ link['text'] }}</a></li>
-		{% endfor %}
-		</ul>
+		{% block flashed_messages %}
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<ul class="flashed_messages">
+			{% for message in messages %}
+				<li class="flashed_message">{{ message }}</li>
+			{% endfor %}
+			</ul>
+			{% endif %}
+		{% endwith %}
 		{% endblock %}
+
+		<div id="links">
+		{% block links %}
+			<ul class="links_list">
+			{% for link in links %}
+			<li><a href="{{ link['url'] }}">{{ link['text'] }}</a></li>
+			{% endfor %}
+			</ul>
+			{% endblock %}
+		</div>
+
+
+		<div id="content">
+		{% block content %}{% endblock %}
+		</div>
+
+		<footer>{% block footer %}{{ footer_message | safe }}{% endblock %}</footer>
 	</div>
-
-
-	<div id="content">
-	{% block content %}{% endblock %}
-	</div>
-
-	<footer>{% block footer %}{{ footer_message | safe }}{% endblock %}</footer>
 </body>
 
 </html>
