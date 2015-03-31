@@ -1,5 +1,5 @@
 add_link = (link_text, url) ->
-	new_link = "<li><a href='#{url}'>#{link_text}</a></li> "
+	new_link = "<li><a href='/#{url}/'>#{link_text}</a></li> "
 	$('.links_list').append new_link
 	$('#remove_link_choice').append "<option value='#{link_text}'>#{link_text}</option>"
 
