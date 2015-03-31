@@ -106,13 +106,13 @@ ul.links_list
 	margin-left: auto;
 	position: relative;
 	margin-right: auto;
-	padding-left: 0;
 }
 
 ul.links_list li
 {
 	display: inline;
 	list-style-type: none;
+	padding-right: 0.5vmax;
 }
 
 /* index */
