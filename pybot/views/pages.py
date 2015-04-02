@@ -55,8 +55,8 @@ def render_page(slug=None):
 				return jsonify({'title': category.title,
 								'slug': category.slug,
 								'subpages': [{'title': p.title,
-											 'slug': p.slug}
-											 for p in category.pages.all()]})
+											  'slug': p.slug}
+											  for p in category.pages.all()]})
 			else:
 				return render_template('pages.html', page=(category,), mode='category')
 	else:
