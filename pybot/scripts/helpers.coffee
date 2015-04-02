@@ -1,7 +1,10 @@
 window.helpers =
-	post_form: (form) ->
+	post_form: (form, special_post_url) ->
 		values = form.serializeArray()
-		post_url = form.attr 'action'
+		if special_post_url?
+			post_url = special_post_url
+		else
+			post_url = form.attr 'action'
 		payload = {}
 		for item in values
 			payload[item['name']] = item['value']
