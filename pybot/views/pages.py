@@ -98,7 +98,15 @@ def add_new_page():
 			return redirect(urljoin(url_for('render_page'), new_page.get('slug', '')))
 
 		else:
-			if request.args.get('asjson'):
-				return helpers.make_json_message(
-					'error', new_page_form.errors)
-			return 'success'
+			return helpers.make_json_message(
+				'error', new_page_form.errors)
+
+@app.route('/pages/preview/', methods=('POST',))
+@login_required
+def preview_page():
+	title = request.form.get('page_title', '')
+	content_markdown = request.form.get('new_page_content', '')
+	content_html = mistune.markdown(content_markdown)
+
+	preview = {'title': title, 'content': content_html}
+	return jsonify(preview)
