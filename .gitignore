@@ -61,6 +61,4 @@ config.py
 
 *.js
 
-pybot/static/codemirror/
-
 Cakefile

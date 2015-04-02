@@ -1,0 +1,3 @@
+[submodule "pybot/static/codemirror"]
+	path = pybot/static/codemirror
+	url = https://github.com/codemirror/CodeMirror.git
