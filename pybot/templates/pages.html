@@ -43,7 +43,8 @@
 <br>
 {{ form.new_page_content.label }}: <br> {{ form.new_page_content() }}
 <br>
-<a class="preview_button">preview</a>
+<a class="preview_button" data-preview_url="{{ url_for('preview_page') }}">
+preview</a>
 <input type="submit" value="create new page">
 </form>
 </div>
