@@ -13,8 +13,21 @@ show_preview = (title, content) ->
 hide_preview = () ->
 	preview_div = $('#page_preview')
 	preview_div.fadeOut 100
-	$('#add_page').fadeIn 100
 	preview_div.remove()
+
+show_edit = (title, content) ->
+	edit_div = $('<div id="edit_div"></div>')
+	title_input = "<input type='text' name='title' value='#{title}'>"
+	content_input = "<textarea id='new_page_content'>#{content}</textarea>"
+	preview_button = '<a class="preview_button">preview</a>'
+	submit_button = '<a class="submit_button">submit</a>'
+
+	elements = [title_input, content_input, preview_button, submit_button]
+	edit_div.append elements
+
+	$('#view_page').fadeOut 100
+	$('#content').append edit_div
+
 
 
 $(document).ready () ->
@@ -26,7 +39,13 @@ $(document).ready () ->
 		else
 			$('#new_category_field').fadeOut 100
 
-	$('a.preview_button').click (event) ->
+
+	$('#edit_page_button').click (event) ->
+		edit_url = $(event.target).attr 'data-edit_url'
+		$.get "#{location.href}?asjson=true", (response) ->
+			show_edit response['title'], response['content_markdown']
+
+	$('#content').on 'click', 'a.preview_button', (event) ->
 		form = $('#add_page_form')
 		preview_url = $(event.target).attr 'data-preview_url'
 		result = helpers.post_form form, preview_url
@@ -35,3 +54,4 @@ $(document).ready () ->
 
 	$('#content').on 'click', '#close_preview_button', () ->
 		hide_preview()
+		$('#add_page').fadeIn 100
