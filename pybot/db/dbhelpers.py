@@ -86,9 +86,6 @@ def get_all_pages() -> [Page]:
 
 def modify_page(slug: str, **kwargs):
     page = get_page(slug)
-    if 'new_title' in kwargs:
-        page.slug = kwargs['new_title']
-        del kwargs['new_title']
     for k, v in kwargs.items():
         page.__setattr__(k, v)
     db.session.commit()       
