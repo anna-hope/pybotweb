@@ -28,6 +28,11 @@ def create_page(title: str, content_markdown: str, category=None):
 										content_html, category)
 	return new_page
 
+def edit_page(slug: str, title: str, content_markdown: str, category=None):
+	content_html = mistune.markdown(content_markdown)
+	dbhelpers.modify_page(slug, title=title, content_markdown=content_markdown,
+											 content_html=content_html)
+
 
 def get_page(slug: str):
 	return dbhelpers.get_page(slug)
@@ -46,7 +51,13 @@ def render_page(slug=None):
 		slug = slug.casefold()
 		page = get_page(slug)
 		if page:
-			return render_template('pages.html', page=page, mode='page')
+			if request.args.get('asjson'):
+				return jsonify({'title': page.title,
+								'slug': page.slug,
+								'content_markdown': page.content_markdown,
+								'content_html': page.content_html})
+			else:
+				return render_template('pages.html', page=page, mode='page')
 		else:
 
 			# try finding a page category
@@ -110,3 +121,19 @@ def preview_page():
 
 	preview = {'title': title, 'content': content_html}
 	return jsonify(preview)
+
+@app.route('/pages/edit/', methods=('POST',))
+@login_required
+def edit_page():
+	slug = request.form.get('slug')
+
+	new_title = request.form.get('title', '')
+	content_markdown = request.form.get('content_markdown')
+	edit_page(slug, new_title, content_markdown)
+	return make_json_message('success', 'page "{}" modified'.format(new_title))
+	
+
+@app.route('/pages/remove/', methods=('POST',))
+@login_required
+def remove_page():
+	return 'not done'
