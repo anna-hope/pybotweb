@@ -28,14 +28,14 @@ def create_page(title: str, content_markdown: str, category=None):
 										content_html, category)
 	return new_page
 
-def edit_page(slug: str, title: str, content_markdown: str, category=None):
+def modify_page(slug: str, title: str, content_markdown: str, category=None):
 	content_html = mistune.markdown(content_markdown)
 	dbhelpers.modify_page(slug, title=title, content_markdown=content_markdown,
 											 content_html=content_html)
 
 
 def get_page(slug: str):
-	return dbhelpers.get_page(slug)
+	return dbhelpers.get_page(slug=slug)
 
 def get_category(slug: str):
 	return dbhelpers.get_page_category(slug)
@@ -76,7 +76,7 @@ def render_page(slug=None):
 
 @app.route('/pages/<category>/<slug>/')
 def render_subpage(category, slug):
-	...
+	return 'not implemented'
 
 @app.route('/pages/add_new/', methods=('GET', 'POST'))
 @login_required
@@ -125,12 +125,16 @@ def preview_page():
 @app.route('/pages/edit/', methods=('POST',))
 @login_required
 def edit_page():
-	slug = request.form.get('slug')
-
-	new_title = request.form.get('title', '')
-	content_markdown = request.form.get('content_markdown')
-	edit_page(slug, new_title, content_markdown)
-	return make_json_message('success', 'page "{}" modified'.format(new_title))
+	try:
+		slug = request.form['slug']
+	except KeyError:
+		return helpers.make_json_message(
+				'failure', 'you must provide a slug')
+	new_title = request.form.get('title')
+	content_markdown = request.form.get('new_page_content')
+	modify_page(slug, new_title, content_markdown)
+	return helpers.make_json_message(
+				'success', 'page "{}" modified'.format(new_title))
 	
 
 @app.route('/pages/remove/', methods=('POST',))

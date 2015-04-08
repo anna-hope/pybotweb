@@ -7,6 +7,8 @@
 
 {% block content %}
 
+{# viewing categories #}
+
 {% if mode == 'category' %}
 {% set categories = page %}
 <ul id="category_list">
@@ -24,13 +26,15 @@
 	{% endfor %}
 </ul>
 
+{# viewing a page #}
+
 {% elif mode == 'page' %}
 <div id="view_page">
 
 {% if current_user.is_authenticated() %}
 <div id="manage_page">
-<a id="edit_page_button" data-edit_url="{{ url_for('edit_page') }}">edit this page</a> 
-<a id="remove_page_button"  data-remove_url="{{ url_for('remove_page') }}">remove thise page</a>
+<a id="edit_page_button" data-edit-url="{{ url_for('edit_page') }}">edit this page</a> 
+<a id="remove_page_button" data-remove-url="{{ url_for('remove_page') }}">remove this page</a>
 </div>
 {% endif %}
 
@@ -39,6 +43,8 @@
 {{ page.content_html | safe }}
 </article>
 </div>
+
+{# adding a new page #}
 
 {% elif mode == 'new_page' %}
 <div id="add_page">
@@ -53,7 +59,8 @@
 <br>
 {{ form.new_page_content.label }}: <br> {{ form.new_page_content() }}
 <br>
-<a class="preview_button" data-preview_url="{{ url_for('preview_page') }}">
+<a class="preview_button" data-preview-url="{{ url_for('preview_page') }}"
+data-mode="add">
 preview</a>
 <input type="submit" value="create new page">
 </form>
