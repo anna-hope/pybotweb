@@ -1,5 +1,5 @@
 window.helpers =
-	post_form: (form, special_post_url) ->
+	post_form: (form, special_post_url, extra) ->
 		values = form.serializeArray()
 		if special_post_url?
 			post_url = special_post_url
@@ -8,6 +8,8 @@ window.helpers =
 		payload = {}
 		for item in values
 			payload[item['name']] = item['value']
+		if extra?
+			payload[key] = value for key, value of extra
 
 		$.post "#{post_url}?asjson=true", payload
 
