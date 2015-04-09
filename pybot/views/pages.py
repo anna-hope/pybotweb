@@ -37,6 +37,9 @@ def modify_page(slug: str, title: str, content_markdown: str, category=None):
 def get_page(slug: str):
 	return dbhelpers.get_page(slug=slug)
 
+def delete_page(slug: str):
+	dbhelpers.delete_page(slug)
+
 def get_category(slug: str):
 	return dbhelpers.get_page_category(slug)
 
@@ -140,4 +143,12 @@ def edit_page():
 @app.route('/pages/remove/', methods=('POST',))
 @login_required
 def remove_page():
-	return 'not done'
+	try:
+		slug = request.form['slug']
+	except KeyError:
+		return helpers.make_json_message(
+				'failure', 'you must provide a slug')
+	delete_page(slug)
+	return helpers.make_json_message(
+			'success', 'page "{}" was deleted'.format(slug))
+

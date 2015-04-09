@@ -11,7 +11,7 @@ show_preview = (title, content, mode) ->
 	preview_div.hide()
 
 	switch mode
-		when 'new' then $('#add_page').fadeOut 100
+		when 'add' then $('#add_page').fadeOut 100
 		when 'edit' then $('#edit_page').fadeOut 100
 
 	$('#content').append preview_div
@@ -57,6 +57,13 @@ update_page = () ->
 		$('h2.page_title').text new_title
 		$('article.pybot_page').html new_content
 
+undelete = () ->
+	delete sessionStorage['really_remove']
+	warning_message = $('p.page_remove_warning')
+	warning_message.fadeOut 100
+	warning_message.remove()
+
+
 $(document).ready () ->
 
 	$('#page_category').change () ->
@@ -100,5 +107,27 @@ $(document).ready () ->
 					hide_edit_form()
 				when 'failure'
 					window.helpers.show_message response['message'], '#content', error=true
-				
+
+	$('#remove_page_button').click (event) ->
+		if sessionStorage.really_remove?
+			[first, ..., slug, last] = location.href.split('/')
+			remove_url = $(event.target).attr 'data-remove-url'
+			$.post(remove_url, {'slug': slug}).done (response) ->
+				switch response['status']
+					when 'success'
+						undelete()
+						location.href = $SITE_ROOT + '/pages/'
+		else
+			warning_message = $("<p class='page_remove_warning'>
+				you won't be able to undo this — press again if you're sure</p>")
+			warning_message.hide()
+			$(event.target).parent().prepend warning_message
+			warning_message.fadeIn 100
+
+			sessionStorage.really_remove = true
+
+			# remove all that after 30 seconds if the user changes her mind
+			window.setTimeout undelete, 30000
+
+
 			
