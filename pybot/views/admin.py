@@ -127,3 +127,11 @@ def change_footer():
 		return helpers.make_json_message(*result_message)
 	else:
 		return helpers.form_error_message(footer_form)
+
+@app.route('/generate_token/')
+@login_required
+def generate_token():
+	token = dbhelpers.create_token()
+	return helpers.make_json_message('success', 
+					message='{}?token={}'.format(
+							url_for('register_user'), token.token))
