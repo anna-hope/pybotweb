@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form id="registration_form" 
+	action="{{ '{}?token={}'.format(url_for('register_user'), token) }}" 
+	method="POST">
+{% for field in form %}
+{{ field.label }}: {{ field() }}
+<br>
+{% endfor %}
+<input type="submit" form="registration_form" value="register me">
+</form>
+{% endblock %}
