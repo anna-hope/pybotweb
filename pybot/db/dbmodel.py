@@ -2,6 +2,7 @@ from enum import IntEnum
 
 from pybot import app
 from flask.ext.sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy(app)
 
@@ -10,13 +11,17 @@ class User(db.Model):
 	email = db.Column(db.String(120), unique=True)
 	first_name = db.Column(db.String(80))
 	last_name = db.Column(db.String(80))
-	_password = db.Column(db.String(255))
+	_password_hash = db.Column(db.String(255))
+	_activated = db.Column(db.Boolean)
 
-	def __init__(self, email: str, first_name: str, last_name: str):
-		self.email = email.casefold()
-		self.username = email.casefold()
+	def __init__(self, email: str, first_name: str, last_name: str,
+					password=''):
+		self.email = email
+		self.username = email
 		self.first_name = first_name
 		self.last_name = last_name
+		self.password = password
+
 
 	def __repr__(self):
 		return 'User {} {}, {}'.format(
@@ -36,13 +41,24 @@ class User(db.Model):
 
 	@property
 	def password(self):
-	    return self._password
+		# this is not meant to be used directly
+	    return self._password_hash
 	@password.setter
 	def password(self, value):
-		# add code to test for complexity
-	    self._password = value
+	    self._password_hash = generate_password_hash(value)
+
+	def check_password(self, password: str):
+		return check_password_hash(self.password, password)
 	
-	
+class RegistrationToken(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	token = db.Column(db.String(100), unique=True)
+
+	def __init__(self, token: str):
+		self.token = token
+
+	def __repr__(self):
+		return 'Registration Token {}'.format(self.token)
 
 class Page(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
