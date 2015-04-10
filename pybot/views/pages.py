@@ -86,7 +86,7 @@ def render_subpage(category, slug):
 def add_new_page():
 	if request.method == 'GET':
 		new_page_form = NewPageForm()
-		new_page_form.page_category.choices += [(c.slug, c.title) for c in get_categories()]
+		new_page_form.page_category.choices += [set([(c.slug, c.title) for c in get_categories()])]
 		return render_template('pages.html', mode='new_page', form=new_page_form)
 
 	else:
@@ -151,4 +151,3 @@ def remove_page():
 	delete_page(slug)
 	return helpers.make_json_message(
 			'success', 'page "{}" was deleted'.format(slug))
-
