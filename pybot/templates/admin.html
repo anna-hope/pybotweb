@@ -30,8 +30,10 @@
 <br>
 {% endfor %}
 
-<a id="generate_token_button" href="{{ url_for('generate_token') }}">
+<div id="generate_tokens">
+<a id="generate_token_button" data-url="{{ url_for('generate_token') }}">
 generate a registration token</a>
+</div>
 
 </div>
 
