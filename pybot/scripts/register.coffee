@@ -1,6 +1,7 @@
 $(document).ready () ->
 
-	$('#registration_form').click (event) ->
+	$('#registration_form').submit (event) ->
+		event.preventDefault()
 		form = $(event.target)
 		result = window.helpers.post_form form
 		result.done (response) ->
@@ -8,6 +9,4 @@ $(document).ready () ->
 				when 'success' then location.href = $SITE_ROOT
 				when 'failure'
 					window.helpers.show_message response['message'], parent='#content', error=true
-
-				
 			
