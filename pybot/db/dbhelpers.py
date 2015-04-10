@@ -1,6 +1,10 @@
 from functools import partial
+import string
+from random import SystemRandom
+
 from ..db.dbmodel import (db, app,
-                            User, Page, Category, 
+                            User, RegistrationToken,
+                            Page, Category, 
                             Message, MessageType,
                             Link)
 
@@ -23,10 +27,19 @@ def remove_from_db(obj: db.Model):
 
 # users
 
-def create_user(email=None, first_name=None, last_name=None, password=None) -> bool:
+def create_user(**kwargs) -> User:
+    email = kwargs.get('email', '').casefold()
+    first_name = kwargs.get('first_name', '')
+    last_name = kwargs.get('last_name', '')
+    password = kwargs.get('password', '')
     new_user = User(email, first_name, last_name)
     new_user.password = password
-    return add_to_db(new_user)
+
+    if kwargs.get('token'):
+        invalidate_token(kwargs['token'])
+
+    add_to_db(new_user)
+    return new_user
 
 def get_user(userid=None, email=None, first_name=None, last_name=None) -> User:
     if userid:
@@ -54,6 +67,31 @@ def change_user(email: str, **kwargs):
 def delete_user(email: str):
     user = get_user(email=email)
     remove_from_db(user)
+
+# registration tokens
+
+def create_token(length=10) -> bool:
+    r = SystemRandom()
+    token = ''.join([r.choice(string.ascii_lowercase+string.digits)
+                         for _ in range(length)])
+    new_token = RegistrationToken(token)
+    
+    if add_to_db(new_token):
+        return new_token
+
+def check_token(token: str) -> bool:
+    if RegistrationToken.query.filter_by(token=token).first():
+        return True
+    else:
+        return False
+
+def invalidate_token(token: str):
+    try:
+        thetoken = RegistrationToken.query.filter_by(
+                                token=token).first()
+        remove_from_db(thetoken)
+    except NoResultFound:
+        pass
 
 # pages 
 
