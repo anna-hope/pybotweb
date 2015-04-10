@@ -77,3 +77,10 @@ $(document).ready () ->
 					$('footer').append "<p>#{$('#new_footer_text').val()}</p>"
 				when 'error'
 					window.helpers.show_message result['message'], error=true
+
+	$('#generate_token_button').click (event) ->
+		button  = $(event.target)
+		generate_url = button.attr 'data-url'
+		result = $.get generate_url
+		result.done (response) ->
+			$('#generate_tokens').append "<p>#{response['message']}</p>"
