@@ -12,7 +12,6 @@ class User(db.Model):
 	first_name = db.Column(db.String(80))
 	last_name = db.Column(db.String(80))
 	_password_hash = db.Column(db.String(255))
-	_activated = db.Column(db.Boolean)
 
 	def __init__(self, email: str, first_name: str, last_name: str,
 					password=''):
