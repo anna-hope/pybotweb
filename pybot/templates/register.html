@@ -7,8 +7,8 @@
 
 {% block content %}
 <form id="registration_form" 
-	action="{{ '{}?token={}'.format(url_for('register_user'), token) }}" 
-	method="POST">
+	action="{{ '{}?token={}'.format(url_for('register_user'), token) }}"
+	data-token="{{ token }}" method="POST">
 {% for field in form %}
 {{ field.label }}: {{ field() }}
 <br>
