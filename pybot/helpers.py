@@ -24,8 +24,11 @@ def get_result_message(pred: bool, success_msg: str, failure_msg: str,
 	else:
 		return result_tuple(failure_status, failure_msg)
 
-def form_error_message(form):
-	return make_json_message('error', 'invalid form data', errors=form.errors)
+def form_error_message(form_errors, message='invalid form data'):
+	# form errors come in the form of {input element: [list of errors]}
+	errors = ''.join(
+		['{}: {}'.format(k, ' '.join(v)) for k, v in form_errors.items()])
+	return make_json_message('failure', message=message, errors=errors)
 
 # view decoratos
 
