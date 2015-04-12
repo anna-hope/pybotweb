@@ -3,8 +3,9 @@ $(document).ready () =>
 	$('#login_form').submit (event) =>
 		event.preventDefault()
 
-		post = window.helpers.post_form $(event.target)
+		post = window.helpers.post_form $(event.target), null, null, {'asjson': true}
 		post.done (result) ->
+			console.log result
 			switch result['status']
 				when 'success'
 					next = location.search.split('next=')[1]
