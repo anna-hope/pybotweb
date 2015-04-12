@@ -84,15 +84,14 @@ def render_subpage(category, slug):
 @app.route('/pages/add_new/', methods=('GET', 'POST'))
 @login_required
 def add_new_page():
+	new_page_form = NewPageForm(request.form)
+	new_page_form.page_category.choices += [(c.slug, c.title) for c in get_categories()
+											if (c.slug, c.title)
+											not in new_page_form.page_category.choices]
 	if request.method == 'GET':
-		new_page_form = NewPageForm()
-		new_page_form.page_category.choices += [set([(c.slug, c.title) for c in get_categories()])]
 		return render_template('pages.html', mode='new_page', form=new_page_form)
 
 	else:
-		new_page_form = NewPageForm(request.form)
-		new_page_form.page_category.choices += [(c.slug, c.title) for c in get_categories()]
-
 		if new_page_form.validate():
 			title = new_page_form.page_title.data
 			content = new_page_form.new_page_content.data
