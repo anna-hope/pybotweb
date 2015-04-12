@@ -105,11 +105,11 @@ def remove_link():
 def change_header():
 	header_form = HeaderForm(request.form)
 	if header_form.validate():
-		header_text = helpers.htmlify(header_form.new_header_text.data)
+		header_text = header_form.new_header_text.data
 		result = dbhelpers.set_header(header_text)
 		result_message = helpers.get_result_message(result,
 					success_msg='header updated to "{}"'.format(header_text),
-					failure_msg='footer could not be updated')
+					failure_msg='header could not be updated')
 		return helpers.make_json_message(*result_message)
 	else:
 		return helpers.form_error_message(header_form)
