@@ -95,8 +95,7 @@ def register_user():
 			return helpers.make_json_message(
 					'success', '{} was registered'.format(new_user))
 		else:
-			return helpers.make_json_message(
-					'failure', message=form.errors)
+			return helpers.form_error_message(form.errors)
 
 
 
