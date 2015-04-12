@@ -1,5 +1,5 @@
 add_link = (link_text, url) ->
-	new_link = "<li><a href='/#{url}/'>#{link_text}</a></li> "
+	new_link = "<li><a href='#{url}'>#{link_text}</a></li> "
 	$('.links_list').append new_link
 	$('#remove_link_choice').append "<option value='#{link_text}'>#{link_text}</option>"
 
@@ -29,14 +29,13 @@ $(document).ready () ->
 	$('#add_link_form').submit (event) ->
 		event.preventDefault()
 		form = $(event.target)
-
-		post = window.helpers.post_form form
+		post = window.helpers.post_form form, null, null, params={'asjson':true}
 		post.done (result) ->
 			switch result['status']
 				when 'success'
 					link_text = $('#link_text').val()
 					window.helpers.show_message "link #{link_text} added"
-					add_link link_text, $('#endpoint_choice').val() + $('#variable').val()
+					add_link link_text, $('#endpoint_choice option:selected').text() + $('#variable').val()
 				when 'error'
 					window.helpers.show_message result['message'], error=true
 
@@ -83,4 +82,5 @@ $(document).ready () ->
 		generate_url = button.attr 'data-url'
 		result = $.get generate_url
 		result.done (response) ->
-			$('#generate_tokens').append "<p>#{response['message']}</p>"
+			[first, middle, last] = window.location.href.split('/')
+			$('#generate_tokens').append "<p>#{first+middle}#{response['message']}</p>"
