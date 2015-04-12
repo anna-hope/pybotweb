@@ -1,17 +1,22 @@
 window.helpers =
-	post_form: (form, special_post_url, extra) ->
+	post_form: (form, custom_post_url, extra_values, params) ->
 		values = form.serializeArray()
-		if special_post_url?
-			post_url = special_post_url
+		if custom_post_url?
+			post_url = custom_post_url
 		else
 			post_url = form.attr 'action'
+
 		payload = {}
 		for item in values
 			payload[item['name']] = item['value']
-		if extra?
+		if extra_values?
 			payload[key] = value for key, value of extra
 
-		$.post "#{post_url}?asjson=true", payload
+		if params?
+			serialized_params = $.param(params)
+			$.post "#{post_url}?#{serialized_params}", payload
+		else
+			$.post "#{post_url}", payload
 
 	show_message: (message, parent='body', error=false) ->
 		if $('#message_div')?
