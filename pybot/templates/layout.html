@@ -31,12 +31,18 @@
 	{% block scripts %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="{{ url_for('static', filename='scripts/helpers.js') }}"></script>
+	{% if current_user.is_authenticated() %}
+	<script src="{{ url_for('static', filename='scripts/layout-admin.js') }}"></script>
+	{% endif %}
 	{% endblock %}
 </head>
 
 <body>
 	<div id="wrapper">
-		<header><a class="header_link" href="{{ url_for('home') }}">{% block header %}{{ header_message | safe }}{% endblock %}</a></header>
+		<header><a class="header_link" href="{{ url_for('home') }}" 
+		data-update="{{ url_for('change_header') }}">
+		{% block header %}{{ header_message }}{% endblock %}</a>
+		</header>
 
 		{% if current_user.is_authenticated() %}
 			<div id="user_panel">
