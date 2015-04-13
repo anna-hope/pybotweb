@@ -98,7 +98,7 @@ def remove_link():
 					failure_msg='link {} could not be removed'.format(link_text))
 		return helpers.make_json_message(*result_message)
 	else:
-		return helpers.form_error_message(remove_link_form)
+		return helpers.form_error_message(remove_link_form.errors)
 
 @app.route('/change_header/', methods=('POST',))
 @login_required
@@ -112,7 +112,7 @@ def change_header():
 					failure_msg='header could not be updated')
 		return helpers.make_json_message(*result_message)
 	else:
-		return helpers.form_error_message(header_form)
+		return helpers.form_error_message(header_form.errors)
 
 @app.route('/change_footer/', methods=('POST',))
 @login_required
@@ -126,7 +126,7 @@ def change_footer():
 					failure_msg='footer could not be updated')
 		return helpers.make_json_message(*result_message)
 	else:
-		return helpers.form_error_message(footer_form)
+		return helpers.form_error_message(footer_form.errors)
 
 @app.route('/generate_token/')
 @login_required
