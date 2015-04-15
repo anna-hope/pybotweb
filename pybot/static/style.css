@@ -69,7 +69,7 @@ ul
 
 #user_panel
 {
-	font-family: 'PT Serif', Arial, Sans-Serif;
+	font-family: 'Open Sans', Arial, Sans-Serif;
 	font-size: 1.3em;
 	text-align: center;
 	margin-left: auto;
@@ -80,7 +80,7 @@ ul
 {
 	text-align: center;
 	font-size: 1.5em;
-	font-family: 'PT Serif', Arial, Sans-Serif;
+	font-family: 'Open Sans', Arial, Sans-Serif;
 }
 
 ul.flashed_messages
@@ -93,7 +93,7 @@ ul.flashed_messages
 
 li.flashed_message
 {
-	font-family: 'PT Serif', Arial, Sans-Serif;
+	font-family: 'Open Sans', Arial, Sans-Serif;
 	font-size: 2vmax;
 }
 
@@ -103,7 +103,7 @@ ul.links_list
 {
 	text-align: center;
 	font-size: 1.3em;
-	font-family: 'PT Serif', Arial, Sans-Serif;
+	font-family: 'Open Sans', Arial, Sans-Serif;
 	margin-left: auto;
 	position: relative;
 	margin-right: auto;
@@ -142,7 +142,7 @@ ul.links_list li
 {
 	min-width: 15em;
 	min-height: 10em;
-	font-family: 'PT Serif', Arial, Sans-Serif;
+	font-family: 'Open Sans', Helvetica, Sans-Serif;
 	font-size: 1em;
 }
 
