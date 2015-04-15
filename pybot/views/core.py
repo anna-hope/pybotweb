@@ -9,8 +9,8 @@ from wtforms import Form, TextField, PasswordField, validators
 
 @app.route('/')
 def home():
-	return render_template('index.html',
-		content='welcome to pybot')
+	index_message = dbhelpers.get_index_message()
+	return render_template('index.html', content=index_message)
 
 class LoginForm(Form):
 	email = TextField('email', (validators.InputRequired(), validators.Email()))
