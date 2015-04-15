@@ -2,12 +2,12 @@ body
 {
 	max-height: auto;
 	max-width: auto;
-	background-color: #fffdfc;
+	background-color: #fbfcfd;
 }
 
 #content
 {
-	font-family: 'Signika', Helvetica, Sans-Serif;
+	font-family: 'Open Sans', Helvetica, Sans-Serif;
 	font-size: 1.5em;
 	text-align: center;
 	margin-left: auto;
@@ -16,14 +16,15 @@ body
 
 header, footer
 {
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 	text-align: center;
 }
 
 header
 {
-	font-size: 5em;
+	font-size: 8vmax;
 	z-index: 1;
+	margin-bottom: 2vh;
 }
 
 a
@@ -57,7 +58,7 @@ footer
 
 input
 {
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 	font-size: 0.8em;
 }
 
@@ -68,7 +69,7 @@ ul
 
 #user_panel
 {
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 	font-size: 1.3em;
 	text-align: center;
 	margin-left: auto;
@@ -79,7 +80,7 @@ ul
 {
 	text-align: center;
 	font-size: 1.5em;
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 }
 
 ul.flashed_messages
@@ -92,7 +93,7 @@ ul.flashed_messages
 
 li.flashed_message
 {
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 	font-size: 2vmax;
 }
 
@@ -102,7 +103,7 @@ ul.links_list
 {
 	text-align: center;
 	font-size: 1.3em;
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 	margin-left: auto;
 	position: relative;
 	margin-right: auto;
@@ -141,12 +142,13 @@ ul.links_list li
 {
 	min-width: 15em;
 	min-height: 10em;
-	font-family: 'Signika', Arial, Sans-Serif;
+	font-family: 'PT Serif', Arial, Sans-Serif;
 	font-size: 1em;
 }
 
 article.pybot_page
 {
+	font-family: 'Open Sans', Helvetica, Sans-Serif;
 	max-width: 30vmax;
 	font-size: 1.5vmax;
 	margin-left: auto;
@@ -182,6 +184,12 @@ li.page_item
 }
 
 /* admin */ 
+
+#new_header_text
+{
+	width: 30vw;
+	text-align: center;
+}
 
 
 /* play area */
