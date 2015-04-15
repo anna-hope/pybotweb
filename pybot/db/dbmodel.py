@@ -97,6 +97,7 @@ class Category(db.Model):
 class MessageType(IntEnum):
 	header = 1
 	footer = 2
+	index = 3
 
 class Message(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
