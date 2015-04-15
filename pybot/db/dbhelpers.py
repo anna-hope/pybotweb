@@ -192,12 +192,35 @@ def set_footer(text: str) -> bool:
     current_footer = get_footer()
     if current_footer:
         Message.query.filter_by(
-                            message_type=MessageType.footer).update({Message.text: text})
+                            message_type=MessageType.footer).update(
+                                {Message.text: text})
         db.session.commit()
         return True
     else:
         new_footer = Message(MessageType.footer, text)
         return add_to_db(new_footer)
+
+# index message
+
+def get_index_message() -> Message:
+    try:
+        index_message = Message.query.filter_by(
+                                message_type=MessageType.index).first()
+    except NoResultFound:
+        index_message = None
+    return index_message
+
+def set_index_message(text: str) -> bool:
+    current_index_message = get_index_message()
+    if current_index_message:
+        Message.query.filter_by(
+                        message_type=MessageType.index).update(
+                            {Message.text: text})
+        db.session.commit()
+        return True
+    else:
+        new_index_message = Message(MessageType.index, text)
+        return add_to_db(new_index_message)
 
 # links
 
