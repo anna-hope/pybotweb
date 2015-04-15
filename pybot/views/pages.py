@@ -4,7 +4,8 @@ from pybot import app
 from pybot import helpers
 from pybot.db import dbhelpers
 
-from flask import render_template, jsonify, request, url_for, redirect
+from flask import (render_template, jsonify, request, url_for,
+					 redirect, abort)
 from wtforms import Form, StringField, TextAreaField, SelectField, validators
 from flask.ext.login import login_required
 
@@ -65,14 +66,17 @@ def render_page(slug=None):
 
 			# try finding a page category
 			category = get_category(slug)
-			if request.args.get('asjson'):
-				return jsonify({'title': category.title,
-								'slug': category.slug,
-								'subpages': [{'title': p.title,
-											  'slug': p.slug}
-											  for p in category.pages.all()]})
+			if category:
+				if request.args.get('asjson'):
+					return jsonify({'title': category.title,
+									'slug': category.slug,
+									'subpages': [{'title': p.title,
+												  'slug': p.slug}
+												  for p in category.pages.all()]})
+				else:
+					return render_template('pages.html', page=(category,), mode='category')
 			else:
-				return render_template('pages.html', page=(category,), mode='category')
+				return abort(404)
 	else:
 		return render_template('pages.html', page=get_categories(),
 								 mode='category')
