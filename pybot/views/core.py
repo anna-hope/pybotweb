@@ -7,10 +7,7 @@ from flask import (render_template, request, redirect,
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from wtforms import Form, TextField, PasswordField, validators
 
-@app.route('/')
-def home():
-	index_message = dbhelpers.get_index_message()
-	return render_template('index.html', content=index_message)
+import mistune
 
 class LoginForm(Form):
 	email = TextField('email', (validators.InputRequired(), validators.Email()))
@@ -25,7 +22,27 @@ class RegistrationForm(Form):
 										  	message='passwords must match')))
 	confirm_password = PasswordField('and again')
 
+@app.route('/')
+def home():
+	index_message = dbhelpers.get_index_message()
+	return render_template('index.html', content=index_message.text)
 
+@app.route('/update_index_message/', methods=('POST',))
+@login_required
+def update_index_message():
+	try:
+		new_message_text = request.form['new_message_text']
+	except KeyError:
+		return helpers.make_json_message('failure', 
+										 'no message text was provided')
+	html_message = mistune.markdown(new_message_text)
+	if dbhelpers.set_index_message(html_message):
+		return helpers.make_json_message('success',
+										'message updated',
+										new_message=html_message)
+	else:
+		return helpers.make_json_message('failure',
+										 'message could not be updated')
 
 @app.route('/login/', methods=('GET', 'POST'))
 @helpers.login_view
