@@ -11,7 +11,7 @@ def inject_header():
 	try:
 		header_text = dbhelpers.get_header().text
 	except AttributeError:
-		header_text = 'no header text set'
+		header_text = None
 	return {'header_message': header_text}
 
 @app.context_processor
@@ -19,7 +19,7 @@ def inject_footer():
 	try:
 		footer_text = dbhelpers.get_footer().text
 	except AttributeError:
-		footer_text = 'no footer text set'
+		footer_text = None
 	return {'footer_message': footer_text}
 
 @app.context_processor
