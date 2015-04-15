@@ -1,5 +1,19 @@
 {% extends 'layout.html' %}
 
+{% block scripts %}
+{{ super() }}
+{% if current_user.is_authenticated() %}
+	<script src="{{ url_for('static', filename='scripts/index-admin.js') }}">
+	</script>
+{% endif %}
+{% endblock %}
+
 {% block content %}
-<div id="index_message"><p>{{ content }}</p></div>
+<div id="index_message">
+{% if content %}
+	{{ content | safe }}
+{% else %}
+	<p>click and hold to edit this text</p>
+</div>
+{% endif %}
 {% endblock %}
