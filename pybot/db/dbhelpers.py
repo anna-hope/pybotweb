@@ -231,7 +231,8 @@ def add_link(text: str, endpoint='', variable='') -> bool:
 def get_links() -> [Link]:
     try:
         return Link.query.all()
-    except Exception: # change to the actual exception
+    # change to the actual exception
+    except Exception: 
         return []
 
 def remove_link(text: str) -> bool:
