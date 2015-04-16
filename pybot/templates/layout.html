@@ -41,7 +41,7 @@
 <body>
 	<div id="wrapper">
 		<header><a class="header_link" href="{{ url_for('home') }}" 
-		data-update="{{ url_for('change_header') }}">
+		data-update-url="{{ url_for('change_header') }}">
 		{% block header %}
 			{% if header_message %}
 				{{ header_message }}
@@ -87,14 +87,15 @@
 		{% block content %}{% endblock %}
 		</div>
 
-		<footer>
+		<footer data-update-url="{{ url_for('change_footer') }}">
 		{% block footer %}
 			{% if footer_message %}
-				{{ footer_message }}
+				{{ footer_message | safe }}
 			{% else %}
 				click and hold to edit the footer
 			{% endif %}
-		{% endblock %}</footer>
+		{% endblock %}
+		</footer>
 	</div>
 </body>
 
