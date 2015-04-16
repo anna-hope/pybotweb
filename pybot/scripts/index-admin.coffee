@@ -21,7 +21,8 @@ edit_index_message = () ->
 
 update_index_message = () ->
 	new_message_textarea = $('#new_message_text')
-	new_message_form = $('<form action="/update_index_message/" method="POST"></form>')
+	update_url = $('#index_message').attr 'data-update-url'
+	new_message_form = $("<form action='#{update_url}' method='POST'></form>")
 	new_message_form.append new_message_textarea
 	result = helpers.post_form new_message_form
 	result.done (response) ->
@@ -38,7 +39,7 @@ $(document).ready () ->
 
 	$('#index_message').mousedown () ->
 		if not editing
-			timeout = window.setTimeout edit_index_message, 1500
+			timeout = window.setTimeout edit_index_message, 1000
 
 	$('#index_message').mouseup () ->
 		window.clearTimeout timeout
