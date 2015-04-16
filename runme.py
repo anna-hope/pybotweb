@@ -1,9 +1,12 @@
 #!/usr/bin/env python3.4
 
-import pathlib, asyncio
+import asyncio
+from pathlib import Path
+
+import click, coffeescript
+from flask import json
 
 from pybot import app, load_app
-import click, coffeescript
 
 @asyncio.coroutine
 def coffee_to_js(coffeefile_path, js_file_path):
@@ -17,19 +20,40 @@ def coffee_to_js(coffeefile_path, js_file_path):
 
 @asyncio.coroutine
 def compile_coffee(coffee_path='scripts', output_path=('static', 'scripts')):
-    path = pathlib.Path(app.root_path, coffee_path)
-    out_path = pathlib.Path(app.root_path, *output_path)
-    if not out_path.exists():
-        out_path.mkdir()
+    cs_path = Path(app.root_path, coffee_path)
+    js_path = Path(app.root_path, *output_path)
+    if not js_path.exists():
+        js_path.mkdir()
 
     to_compile = []
 
-    for file in path.iterdir():
-        if file.suffix == ('.coffee'):
-            out_file = pathlib.Path(out_path, (file.stem + '.js'))
-            to_compile.append(coffee_to_js(file, out_file))
+    # get a list of mtimes to see which coffeescript files need to be compiled
+    try:
+        with Path(cs_path, 'mtimes.json').open() as mtimes_file:
+            mtimes = json.load(mtimes_file)
+    except FileNotFoundError:
+        mtimes = {}
 
-    yield from asyncio.wait(to_compile)
+    for file in cs_path.iterdir():
+        if file.suffix == ('.coffee'):
+            out_file = Path(js_path, (file.stem + '.js'))
+            last_mtime = mtimes.get(file.name, 0)
+            current_mtime = file.stat().st_mtime
+
+            # compile the file only if it's corresponding js version is outdated
+            # or doesn't exist
+            if current_mtime > last_mtime or not out_file.exists():
+                mtimes[file.name] = current_mtime
+                to_compile.append(coffee_to_js(file, out_file))
+
+    with Path(cs_path, 'mtimes.json').open('w') as mtimes_file:
+        json.dump(mtimes, mtimes_file)
+
+    try:
+        yield from asyncio.wait(to_compile)
+    except ValueError:
+        # there is nothing to compile
+        yield None
 
 def prepare_app(debug=False):
     loop = asyncio.get_event_loop()
