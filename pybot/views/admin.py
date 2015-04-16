@@ -119,7 +119,7 @@ def change_header():
 def change_footer():
 	footer_form = FooterForm(request.form)
 	if footer_form.validate():
-		footer_text = helpers.htmlify(footer_form.new_footer_text.data)
+		footer_text = footer_form.new_footer_text.data
 		result =  dbhelpers.set_footer(footer_text)
 		result_message = helpers.get_result_message(result, 
 					success_msg='footer updated to "{}"'.format(footer_text), 
