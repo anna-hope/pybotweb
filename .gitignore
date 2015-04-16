@@ -64,3 +64,4 @@ config.py
 Cakefile
 
 *.db
+pybot/scripts/mtimes.json
