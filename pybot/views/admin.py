@@ -20,6 +20,8 @@ class LinkForm(PybotForm):
 		validators.Length(max=20)))
 	# update to use only selectable endpoints
 	endpoint_choice = SelectField('Endpoint', (validators.InputRequired(),))
+
+	# this is a dummy field, to be populated with ajax on the client side
 	variable = StringField('Subpage')
 
 	# hacky way of adding it to forms
