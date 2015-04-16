@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block content %}
-<div id="index_message">
+<div id="index_message"
+data-update-url="{{ url_for('update_index_message') }}">
 {% if content %}
-	{{ content | safe }}
+	{{ content.text | safe }}
 {% else %}
 	<p>click and hold to edit this text</p>
 </div>
