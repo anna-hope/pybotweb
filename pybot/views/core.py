@@ -25,7 +25,7 @@ class RegistrationForm(Form):
 @app.route('/')
 def home():
 	index_message = dbhelpers.get_index_message()
-	return render_template('index.html', content=index_message.text)
+	return render_template('index.html', content=index_message)
 
 @app.route('/update_index_message/', methods=('POST',))
 @login_required
