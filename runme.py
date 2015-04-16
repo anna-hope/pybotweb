@@ -40,7 +40,7 @@ def compile_coffee(coffee_path='scripts', output_path=('static', 'scripts')):
             last_mtime = mtimes.get(file.name, 0)
             current_mtime = file.stat().st_mtime
 
-            # compile the file only if it's corresponding js version is outdated
+            # compile the file only if its corresponding js version is outdated
             # or doesn't exist
             if current_mtime > last_mtime or not out_file.exists():
                 mtimes[file.name] = current_mtime
