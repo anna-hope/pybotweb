@@ -5,7 +5,7 @@ from pybot.db import dbhelpers
 
 from flask import render_template, request, url_for, redirect
 from flask.ext.login import login_required
-from wtforms import Form, StringField, SelectField, validators
+from wtforms import Form, StringField, SelectField, HiddenField, validators
 from wtforms.validators import ValidationError
 
 form_names = OrderedDict()
@@ -22,7 +22,7 @@ class LinkForm(PybotForm):
 	endpoint_choice = SelectField('Endpoint', (validators.InputRequired(),))
 
 	# this is a dummy field, to be populated with ajax on the client side
-	variable = StringField('Subpage')
+	variable = HiddenField('Subpage')
 
 	# hacky way of adding it to forms
 	form_names['add_link'] = __qualname__
