@@ -1,6 +1,6 @@
 editing_footer = false
 
-edit_header = () ->
+edit_header = ->
 	current_header = $('a.header_link')
 	current_header_text = current_header.text().trim()
 	new_header_text = """<input type='text'
@@ -10,12 +10,12 @@ edit_header = () ->
 	current_header.hide 100
 	$('header').prepend new_header_text
 
-hide_edit_header = () ->
+hide_edit_header = ->
 	$('a.header_link').show 100
 	$('#new_header_text').hide 100
 	$('#new_header_text').remove()
 
-update_header = () ->
+update_header = ->
 	new_header_text = $('#new_header_text').val()
 	update_url = $('a.header_link').attr 'data-update-url'
 	header_form = $("<form action='#{update_url}' method='POST'></form>")
@@ -27,7 +27,7 @@ update_header = () ->
 			when 'success' then $('a.header_link').text new_header_text
 			when 'failure' then helpers.show_message response['errors'], parent='header', error=true
 
-edit_footer = () ->
+edit_footer = ->
 	editing_footer = true
 	current_footer = $('footer').text().trim()
 	new_footer_input = """<input type='text'
@@ -36,7 +36,7 @@ edit_footer = () ->
 								 value='#{current_footer}'>"""
 	$('footer').html new_footer_input
 
-update_footer = () ->
+update_footer = ->
 	editing_footer = false
 	new_footer_input = $('#new_footer_text')
 	new_footer_text = new_footer_input.val()
