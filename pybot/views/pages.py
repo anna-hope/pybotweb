@@ -85,6 +85,12 @@ def render_page(slug=None):
 def render_subpage(category, slug):
 	return 'not implemented'
 
+@app.route('/pages/get_all/')
+def get_all_pages():
+	jsonable_pages = {page.title: page.slug
+						for page in dbhelpers.get_all_pages()}
+	return jsonify(jsonable_pages)
+
 @app.route('/pages/add_new/', methods=('GET', 'POST'))
 @login_required
 def add_new_page():
