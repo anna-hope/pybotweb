@@ -90,7 +90,7 @@
 		<footer data-update-url="{{ url_for('change_footer') }}">
 		{% block footer %}
 			{% if footer_message %}
-				{{ footer_message | safe }}
+				{{ footer_message }}
 			{% else %}
 				click and hold to edit the footer
 			{% endif %}
