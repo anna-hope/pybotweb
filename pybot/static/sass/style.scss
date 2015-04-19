@@ -3,13 +3,16 @@ $content-font: "Open Sans", Helvetica, Sans-Serif;
 $headline-font: "PT Serif", Arial, Sans-Serif;
 $code-font: "Source Code Pro", Monaco, monospace;
 
-body {
+body
+{
   max-height: auto;
   max-width: auto;
   background-color: $background-color;
+  min-height: 100%;
 }
 
-#content {
+#content
+{
   font-family: $content-font;
   font-size: 1.5em;
   text-align: center;
@@ -17,48 +20,65 @@ body {
   margin-right: auto;
 }
 
-header, footer {
+header, footer 
+{
   font-family: $headline-font;
   text-align: center;
 }
 
-header {
+header 
+{
   font-size: 8vmax;
   z-index: 1;
   margin-bottom: 2vh;
+
 }
 
-a {
+a 
+{
   text-decoration: none;
   color: #0eb0ff;
-  &:hover {
-    color: red;
-    -webkit-transition: color 0.3s;
-    transition: color 0.3s;
+
+  &:hover 
+  {
+	color: red;
+	-webkit-transition: color 0.3s;
+	transition: color 0.3s;
   }
-  &.header_link {
-    text-decoration: none;
+
+  &.header_link 
+  {
+	text-decoration: none;
   }
-  &.user_link {
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+
+  &.user_link 
+  {
+	padding-left: 0.2em;
+	padding-right: 0.2em;
   }
 }
 
-footer {
-  font-size: 1em;
+footer 
+{
+	margin-top: -15vh;
+	font-size: 1em;
+	width: 100%;
+	height: 15vh;
 }
 
-input {
+input 
+{
   font-family: $headline-font;
   font-size: 0.8em;
 }
 
-ul {
+ul 
+{
   list-style: none;
 }
 
-#user_panel {
+#user_panel 
+{
   font-family: $content-font;
   font-size: 1.3em;
   text-align: center;
@@ -66,68 +86,59 @@ ul {
   margin-right: auto;
 }
 
-#message_div {
+#message_div 
+{
   text-align: center;
   font-size: 1.5em;
   font-family: $content-font;
 }
 
-ul.flashed_messages {
-  list-style: none;
+ul.flashed_messages 
+{
   text-align: center;
   background-color: #b6fcd5;
   border-style: solid;
 }
 
-li.flashed_message {
+li.flashed_message 
+{
   font-family: $content-font;
   font-size: 2vmax;
 }
 
-/* links */
-
-ul.links_list {
-  text-align: center;
-  font-size: 1.3em;
-  font-family: $content-font;
-  margin-left: auto;
-  position: relative;
-  margin-right: auto;
-  li {
-    display: inline;
-    list-style-type: none;
-    padding-right: 0.5vmax;
-  }
-}
-
 /* index */
 
-#index_message {
+#index_message 
+{
   margin-left: auto;
   margin-right: auto;
 }
 
 /* login */
 
-#login_form {
+#login_form 
+{
   text-align: center;
 }
 
-#error_message {
+#error_message 
+{
   text-align: center;
   color: red;
 }
 
 /* pages */
 
-#new_page_content {
+#new_page_content 
+{
   min-width: 15em;
   min-height: 10em;
   font-family: $content-font;
   font-size: 1em;
 }
 
-article.pybot_page {
+article.pybot_page 
+{
   font-family: $content-font;
   max-width: 30vmax;
   font-size: 1.5vmax;
@@ -136,45 +147,67 @@ article.pybot_page {
   text-align: left;
 }
 
-ul {
-  &.category_list, &.subpage_list {
-    text-align: center;
-  }
+ul 
+{
+	&.category_list, &.subpage_list 
+	{
+		text-align: center;
+	}
+
+	&.links_list 
+	{
+		text-align: center;
+		font-size: 1.3em;
+		font-family: $content-font;
+		margin-left: auto;
+		position: relative;
+		margin-right: auto;
+
+		li 
+		{
+			display: inline;
+			list-style-type: none;
+			padding-right: 0.5vmax;
+		}
+	}
 }
 
 li {
   &.category_item, &.page_item {
-    text-align: left;
-    margin-left: 45vmax;
-    margin-right: 45vmax;
-    width: 50vmax;
+	text-align: left;
+	margin-left: 45vmax;
+	margin-right: 45vmax;
+	width: 50vmax;
   }
   &.category_item {
-    font-weight: bold;
-    font-size: 1.5vmax;
+	font-weight: bold;
+	font-size: 1.5vmax;
   }
   &.page_item {
-    font-weight: lighter;
-    font-size: 1.2vmax;
-    width: 5vw;
-    display: block;
+	font-weight: lighter;
+	font-size: 1.2vmax;
+	width: 5vw;
+	display: block;
   }
 }
 
 /* admin */
 
-#new_header_text {
+#new_header_text 
+{
   width: 30vw;
   text-align: center;
 }
 
 /* play area */
 
-#code_area {
+#code_area 
+{
   text-align: center;
 }
 
-div.CodeMirror {
+div.CodeMirror 
+{
   border-style: solid;
   height: auto;
   width: auto;
