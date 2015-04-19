@@ -3,7 +3,7 @@
 import asyncio
 from pathlib import Path
 
-import click, coffeescript
+import click, coffeescript, sass
 from flask import json
 
 from pybot import app, load_app
@@ -55,9 +55,16 @@ def compile_coffee(coffee_path='scripts', output_path=('static', 'scripts')):
         # there is nothing to compile
         yield None
 
+def compile_sass(filename='style'):
+    sass_path = app.config['SASS_MANIFEST'][app.name][0]
+    css_path = app.config['SASS_MANIFEST'][app.name][1]
+    sass.compile(dirname=(str(sass_path), str(css_path)))
+
+
 def prepare_app(debug=False):
     loop = asyncio.get_event_loop()
     loop.run_until_complete(compile_coffee())
+    compile_sass()
     load_app()
     if debug:
         app.config.from_object('config.DebugConfig')

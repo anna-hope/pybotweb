@@ -65,3 +65,5 @@ Cakefile
 
 *.db
 pybot/scripts/mtimes.json
+
+*.css

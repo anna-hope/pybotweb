@@ -1,0 +1,194 @@
+$background_color: #fbfcfd;
+$content-font: "Open Sans", Helvetica, Sans-Serif;
+$headline-font: "PT Serif", Arial, Sans-Serif;
+$code-font: "Source Code Pro", Monaco, monospace;
+
+body {
+  max-height: auto;
+  max-width: auto;
+  background-color: $background-color;
+}
+
+#content {
+  font-family: $content-font;
+  font-size: 1.5em;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header, footer {
+  font-family: $headline-font;
+  text-align: center;
+}
+
+header {
+  font-size: 8vmax;
+  z-index: 1;
+  margin-bottom: 2vh;
+}
+
+a {
+  text-decoration: none;
+  color: #0eb0ff;
+  &:hover {
+    color: red;
+    -webkit-transition: color 0.3s;
+    transition: color 0.3s;
+  }
+  &.header_link {
+    text-decoration: none;
+  }
+  &.user_link {
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+  }
+}
+
+footer {
+  font-size: 1em;
+}
+
+input {
+  font-family: $headline-font;
+  font-size: 0.8em;
+}
+
+ul {
+  list-style: none;
+}
+
+#user_panel {
+  font-family: $content-font;
+  font-size: 1.3em;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#message_div {
+  text-align: center;
+  font-size: 1.5em;
+  font-family: $content-font;
+}
+
+ul.flashed_messages {
+  list-style: none;
+  text-align: center;
+  background-color: #b6fcd5;
+  border-style: solid;
+}
+
+li.flashed_message {
+  font-family: $content-font;
+  font-size: 2vmax;
+}
+
+/* links */
+
+ul.links_list {
+  text-align: center;
+  font-size: 1.3em;
+  font-family: $content-font;
+  margin-left: auto;
+  position: relative;
+  margin-right: auto;
+  li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 0.5vmax;
+  }
+}
+
+/* index */
+
+#index_message {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* login */
+
+#login_form {
+  text-align: center;
+}
+
+#error_message {
+  text-align: center;
+  color: red;
+}
+
+/* pages */
+
+#new_page_content {
+  min-width: 15em;
+  min-height: 10em;
+  font-family: $content-font;
+  font-size: 1em;
+}
+
+article.pybot_page {
+  font-family: $content-font;
+  max-width: 30vmax;
+  font-size: 1.5vmax;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+ul {
+  &.category_list, &.subpage_list {
+    text-align: center;
+  }
+}
+
+li {
+  &.category_item, &.page_item {
+    text-align: left;
+    margin-left: 45vmax;
+    margin-right: 45vmax;
+    width: 50vmax;
+  }
+  &.category_item {
+    font-weight: bold;
+    font-size: 1.5vmax;
+  }
+  &.page_item {
+    font-weight: lighter;
+    font-size: 1.2vmax;
+    width: 5vw;
+    display: block;
+  }
+}
+
+/* admin */
+
+#new_header_text {
+  width: 30vw;
+  text-align: center;
+}
+
+/* play area */
+
+#code_area {
+  text-align: center;
+}
+
+div.CodeMirror {
+  border-style: solid;
+  height: auto;
+  width: auto;
+  min-width: 10em;
+  max-width: 35em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  font-size: 1em;
+  font-family: $code-font;
+}
+
+#output_area {
+  text-align: center;
+  font-family: $code-font;
+}
+
