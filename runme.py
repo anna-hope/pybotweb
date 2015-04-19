@@ -27,27 +27,17 @@ def compile_coffee(coffee_path='scripts', output_path=('static', 'scripts')):
 
     to_compile = []
 
-    # get a list of mtimes to see which coffeescript files need to be compiled
-    try:
-        with Path(cs_path, 'mtimes.json').open() as mtimes_file:
-            mtimes = json.load(mtimes_file)
-    except FileNotFoundError:
-        mtimes = {}
-
     for file in cs_path.iterdir():
         if file.suffix == ('.coffee'):
             out_file = Path(js_path, (file.stem + '.js'))
-            last_mtime = mtimes.get(file.name, 0)
-            current_mtime = file.stat().st_mtime
 
             # compile the file only if its corresponding js version is outdated
             # or doesn't exist
-            if current_mtime > last_mtime or not out_file.exists():
-                mtimes[file.name] = current_mtime
+            try:
+                if file.stat().st_mtime >= out_file.stat().st_mtime:
+                    to_compile.append(coffee_to_js(file, out_file))
+            except FileNotFoundError:
                 to_compile.append(coffee_to_js(file, out_file))
-
-    with Path(cs_path, 'mtimes.json').open('w') as mtimes_file:
-        json.dump(mtimes, mtimes_file)
 
     try:
         yield from asyncio.wait(to_compile)
