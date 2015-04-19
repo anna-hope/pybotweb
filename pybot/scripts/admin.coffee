@@ -17,10 +17,17 @@ remove_link = (link_text) ->
 			option = $(option)
 			option.remove()
 
+populate_subpage_select = ->
+	variable_field = $('<select id="variable" name="variable"></select>') 
+	$('#variable').replaceWith variable_field
+	$.get('/pages/get_all').done (response) ->
+		options = "<option value='#{slug}'>#{page_title}</option>" for page_title, slug of response
+		variable_field.append options
+
 
 $(document).ready () ->
-
 	$('div.admin_panel').hide()
+	populate_subpage_select()
 
 	$('a.admin_panel_link').click (event) ->
 		form_name = $(event.target).attr 'data-form'
@@ -38,6 +45,12 @@ $(document).ready () ->
 					add_link link_text, $('#endpoint_choice option:selected').text() + $('#variable').val()
 				when 'error'
 					window.helpers.show_message result['message'], error=true
+
+	$('#endpoint_choice').change (event) ->
+		if $('#endpoint_choice option:selected').val() is 'render_page'
+			$('#variable').show()
+		else
+			$('#variable').hide()
 
 
 	$('#remove_link_form').submit (event) ->
@@ -83,4 +96,4 @@ $(document).ready () ->
 		result = $.get generate_url
 		result.done (response) ->
 			[first, middle, last] = window.location.href.split('/')
-			$('#generate_tokens').append "<p>#{first+middle}#{response['message']}</p>"
+			$('#generate_tokens').append "<p>/#{middle}#{response['message']}</p>"
