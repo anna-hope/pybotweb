@@ -7,3 +7,4 @@ uwsgi
 wtforms>=2.0
 awesome-slugify
 mistune
+libsass>=0.7.0
