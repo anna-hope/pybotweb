@@ -52,33 +52,22 @@ def compile_sass(filename='style'):
 
 
 def prepare_app(debug=False):
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(compile_coffee())
-    compile_sass()
-    load_app()
     if debug:
         app.config.from_object('config.DebugConfig')
     else:
         app.config.from_object('config.ProductionConfig')
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(compile_coffee())
+    compile_sass()
+    load_app()
 
 
 def run_production(host, port):
     prepare_app()
-    # fix to use a production server
     app.run(host=host, port=port)
 
 def run_debug(host, port, straightcoffee=False):
-    app.config.from_object('config.DebugConfig')
-    load_app()
-
-    if straightcoffee:
-        app.config['STRAIGHTCOFFEE'] = True
-        # code to run coffeescript straight
-        ...
-    else:
-        # compile coffeescript
-        prepare_app(debug=True)
-
+    prepare_app(debug=True)
     app.run(debug=True, host=host, port=port)
 
 @click.command()
