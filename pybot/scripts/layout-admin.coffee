@@ -53,7 +53,8 @@ update_footer = ->
 
 $(document).ready () ->
 	timeout = null
-	$('ul.links_list').prepend '<li class="top_link" id="#add_link_button">add a link</li>'
+	if $DEBUG
+		$('ul.links_list').prepend '<li class="top_link" id="#add_link_button">add a link</li>'
 
 	$('a.header_link').mousedown () ->
 		timeout = window.setTimeout edit_header, 1000
