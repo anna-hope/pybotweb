@@ -33,6 +33,7 @@
 	<script src="{{ url_for('static', filename='scripts/helpers.js') }}"></script>
 	{% if current_user.is_authenticated() %}
 	<script src="{{ url_for('static', filename='scripts/layout-admin.js') }}"></script>
+	<script src="{{ url_for('static', filename='scripts/admin-helpers.js') }}"></script>
 	{% endif %}
 	{% endblock %}
 </head>
