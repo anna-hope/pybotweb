@@ -70,5 +70,7 @@ $(document).ready () ->
 		generate_url = button.attr 'data-url'
 		result = $.get generate_url
 		result.done (response) ->
-			[first, middle, last] = window.location.href.split('/')
-			$('#generate_tokens').append "<p>/#{middle}#{response['message']}</p>"
+			[first, middle, last] = window.location.href.split('/') 
+			$('#generate_tokens').append """<p>
+			<a href='#{middle}#{response['message']}'>#{response['message']}</a>
+			</p>"""
