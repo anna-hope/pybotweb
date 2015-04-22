@@ -26,7 +26,7 @@ $('document').ready () ->
 									{mode: 'Python'})
 
 	$('#run_button').click () ->
-		run_play(mcm)
+		run_play mcm
 
 	$('div.CodeMirror').on 'click focusin', () ->
 		console.log 'hi'
@@ -34,3 +34,8 @@ $('document').ready () ->
 		if code_area.attr('data-used') is 'no'
 			code_area.attr 'data-used', 'yes'
 			mcm.setValue ''
+
+	$('div.CodeMirror').on 'keydown', (event) ->
+		if event.which is 13 and (event.metaKey or event.ctrlKey)
+			event.preventDefault()
+			run_play mcm
