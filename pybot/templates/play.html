@@ -12,12 +12,7 @@
 <script src="{{ url_for('static', filename='codemirror/lib/codemirror.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='codemirror/lib/codemirror.css') }}">
 <script src="{{ url_for('static', filename='codemirror/mode/python/python.js') }}"></script>
-
-{% if not config.get('STRAIGHTCOFFEE') %}
-	<script src="{{ url_for('static', filename='scripts/play.js') }}"></script>
-{% else %}
-	{# code to run coffeescript without compiling it #}
-{% endif %}
+<script src="{{ url_for('static', filename='scripts/play.js') }}"></script>
 
 <script type="text/python" 
 src="{{ url_for('static', filename='scripts/prepare_play.py') }}"></script>
