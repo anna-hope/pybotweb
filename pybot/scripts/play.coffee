@@ -25,6 +25,12 @@ $('document').ready () ->
 	mcm = CodeMirror.fromTextArea(document.getElementById 'code_text',
 									{mode: 'Python'})
 
+	# add the shortcut to the run button
+	if navigator['appVersion'].indexOf 'OS X' > -1
+		$('#run_button').text "#{$('#run_button').text()} (⌘+enter)"
+	else
+		$('#run_button').text "#{$('#run_button').text()} (ctrl+enter)"
+
 	$('#run_button').click () ->
 		run_play mcm
 
