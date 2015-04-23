@@ -22,5 +22,6 @@ window.admin_helpers =
 		variable_field = $('<select id="variable" name="variable"></select>') 
 		$(select_element).replaceWith variable_field
 		$.get('/pages/get_all').done (response) ->
-			options = "<option value='#{slug}'>#{page_title}</option>" for page_title, slug of response
-			variable_field.append options
+			options = ["<option value='#{slug}'>#{page_title}</option>" for page_title, slug of response]
+			for option in options
+				variable_field.append option
