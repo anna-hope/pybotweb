@@ -76,7 +76,7 @@ def add_link():
 	if link_form.validate():
 		link_text = link_form.link_text.data
 		endpoint_choice = link_form.endpoint_choice.data
-		variable = link_form.variable.data
+		variable = link_form.variable.data if link_form.variable.data else ''
 		dbhelpers.add_link(link_text, endpoint_choice, variable)
 		if request.args.get('asjson'):
 			return helpers.make_json_message('success', 
