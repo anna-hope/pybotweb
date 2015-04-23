@@ -22,7 +22,7 @@ $(document).ready () ->
 					link_text = $('#link_text').val()
 					if $('#variable').val()?
 						variable_val = $('#variable').val()
-						link_href = "#{$('#endpoint_choice option:selected').text()}/#{variable_val}"
+						link_href = "#{$('#endpoint_choice option:selected').text()}#{variable_val}"
 					else
 						link_href = $('#endpoint_choice option:selected').text()
 					window.helpers.show_message "link #{link_text} added"
