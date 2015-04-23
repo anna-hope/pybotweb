@@ -1,6 +1,7 @@
 $(document).ready () ->
 	$('div.admin_panel').hide()
-	admin_helpers.populate_subpage_select('#variable')
+	if $('#endpoint_choice option:selected').val() is 'render_page'
+			admin_helpers.populate_subpage_select('#variable')
 
 	$('a.admin_panel_link').click (event) ->
 		form_name = $(event.target).attr 'data-form'
@@ -8,16 +9,26 @@ $(document).ready () ->
 
 	$('#add_link_form').submit (event) ->
 		event.preventDefault()
+
+		if $('#endpoint_choice option:selected').val() isnt 'render_page'
+			$('#variable').val ''
+
 		form = $(event.target)
+
 		post = window.helpers.post_form form, null, null, params={'asjson':true}
 		post.done (result) ->
 			switch result['status']
 				when 'success'
 					link_text = $('#link_text').val()
+					if $('#variable').val()?
+						variable_val = $('#variable').val()
+						link_href = "#{$('#endpoint_choice option:selected').text()}/#{variable_val}"
+					else
+						link_href = $('#endpoint_choice option:selected').text()
 					window.helpers.show_message "link #{link_text} added"
 					admin_helpers.add_link(
 						'ul.links_list', link_text, 
-						$('#endpoint_choice option:selected').text() + $('#variable').val())
+						link_href)
 				when 'error'
 					window.helpers.show_message result['message'], error=true
 
@@ -26,6 +37,8 @@ $(document).ready () ->
 			$('#variable').show()
 		else
 			$('#variable').hide()
+
+
 
 
 	$('#remove_link_form').submit (event) ->
