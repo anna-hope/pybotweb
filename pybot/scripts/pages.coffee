@@ -1,4 +1,4 @@
-get_current_page_asjson = () ->
+get_current_page_asjson = ->
 	return $.get "#{location.href}?asjson=true"
 
 show_preview = (title, content, mode) ->
@@ -17,7 +17,7 @@ show_preview = (title, content, mode) ->
 	$('#content').append preview_div
 	preview_div.fadeIn 100
 
-hide_preview = () ->
+hide_preview = ->
 	preview_div = $('#page_preview')
 	preview_div.fadeOut 100
 	preview_div.remove()
@@ -44,20 +44,20 @@ show_edit_form = (title, content) ->
 	$('#view_page').fadeOut 100
 	$('#content').append edit_div
 
-hide_edit_form = () ->
+hide_edit_form = ->
 	edit_div = $('#edit_page')
 	edit_div.fadeOut 100
 	$('#view_page').fadeIn 100
 	edit_div.remove()
 
-update_page = () ->
+update_page = ->
 	get_current_page_asjson().done (response) ->
 		new_title = response['title']
 		new_content = response['content_html']
 		$('h2.page_title').text new_title
 		$('article.pybot_page').html new_content
 
-undelete = () ->
+dismiss_delete_page = ->
 	delete sessionStorage['really_remove']
 	warning_message = $('p.page_remove_warning')
 	warning_message.fadeOut 100
@@ -115,7 +115,7 @@ $(document).ready () ->
 			$.post(remove_url, {'slug': slug}).done (response) ->
 				switch response['status']
 					when 'success'
-						undelete()
+						dismiss_delete_page()
 						location.href = $SITE_ROOT + '/pages/'
 		else
 			warning_message = $("<p class='page_remove_warning'>
@@ -127,7 +127,7 @@ $(document).ready () ->
 			sessionStorage.really_remove = true
 
 			# remove all that after 30 seconds if the user changes her mind
-			window.setTimeout undelete, 30000
+			window.setTimeout dismiss_delete_page, 30000
 
 
 			
