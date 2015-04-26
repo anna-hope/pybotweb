@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form id="file_upload_form" enctype=multipart/form-data 
+		action="{{ url_for('upload_file') }}" method="POST">
+{{ form.image.label }}: {{ form.image() }}
+<br>
+<input type="submit" value="upload">
+</form>
+{% endblock %}
