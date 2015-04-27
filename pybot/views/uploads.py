@@ -28,7 +28,6 @@ def upload_file():
 			file.save(str(file_path))
 		new_file_url = request.url_root + pathname2url(str(Path(UPLOAD_PATH,
 																filename)))
-		print(Path(app.config['UPLOAD_PATH']), filename)
 		return helpers.make_json_message('success', 'file upload succeeded',
 										 url=new_file_url)
 	form = UploadForm(request.form)
