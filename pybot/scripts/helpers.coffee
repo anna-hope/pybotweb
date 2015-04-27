@@ -19,8 +19,7 @@ window.helpers =
 			$.post "#{post_url}", payload
 
 	show_message: (message, parent='body', error=false) ->
-		if $('#message_div')?
-			$('#message_div').remove()
+		this.hide_message()
 
 		message_div = $('<div id="message_div"></div>')
 		message_div.append "<p>#{message}</p>"
@@ -29,4 +28,8 @@ window.helpers =
 			message_div.css 'color', 'red'
 
 		$(parent).append message_div
+
+	hide_message: ->
+		if $('#message_div')?
+			$('#message_div').remove()
 
