@@ -63,7 +63,6 @@ dismiss_delete_page = ->
 	warning_message.fadeOut 100
 	warning_message.remove()
 
-
 $(document).ready () ->
 
 	$('#page_category').change () ->
@@ -129,5 +128,41 @@ $(document).ready () ->
 			# remove all that after 30 seconds if the user changes her mind
 			window.setTimeout dismiss_delete_page, 30000
 
-
+	$('#attach_image_button').click (event) ->
+		upload_url = $(event.target).attr 'data-endpoint'
+		# get the form
+		$.get("#{upload_url}?asjson=true").done (response) ->
+			file_upload_form = $("""<form id='upload_image_form' 
+				enctype=multipart/form-data action='#{upload_url}' method='POST'>
+				</form>""")
+			form_fields = ("#{label}: #{decodeURI field}" for label, field of response)
+			form_fields.push "<input type='submit' value='upload'>"
+			file_upload_form.append form_fields
+			$(event.target).parent().append file_upload_form
 			
+	$('#content').on 'submit', '#upload_image_form', (event) ->
+		event.preventDefault()
+		form = $('#upload_image_form')
+		upload_url = form.attr('action') + '?asjson=true'
+		helpers.show_message 'uploading...', '#content'
+
+		image_select = document.getElementById 'image'
+		image_file = image_select.files[0]
+		form_data = new FormData()
+		form_data.append 'image', image_file, image_file.name
+
+		xhr = new XMLHttpRequest()
+		xhr.open 'POST', upload_url, true
+		xhr.responseType = 'json'
+		xhr.onload = ->
+			response = xhr.response
+			switch response['status']
+				when 'success'
+					helpers.hide_message()
+					markdown_code = "![Image](#{response['url']})"
+					content_plus_image = "#{$('#new_page_content').val()}\n#{markdown_code}" 
+					$('#new_page_content').val content_plus_image
+				when 'failure'
+					helpers.show_message 'upload failed', '#content', error=true
+		xhr.send form_data
+		$('#upload_image_form').remove()
