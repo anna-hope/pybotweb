@@ -173,9 +173,9 @@ ul
 li {
   &.category_item, &.page_item {
 	text-align: left;
-	margin-left: 45vmax;
-	margin-right: 45vmax;
-	width: 50vmax;
+	margin-left: auto;
+	margin-right: auto;
+	width: 20vw;
   }
   &.category_item {
 	font-weight: bold;
