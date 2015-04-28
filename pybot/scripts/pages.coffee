@@ -23,6 +23,9 @@ hide_preview = ->
 	preview_div.remove()
 
 show_edit_form = (title, content) ->
+	$('#edit_page_button').hide()
+	$('#attach_image_button').show()
+
 	edit_div = $('<div id="edit_page"></div>')
 	edit_form = $('<form id="edit_page_form"></form>')
 	title_input = "<input type='text' name='title' value='#{title}'>"
@@ -45,6 +48,8 @@ show_edit_form = (title, content) ->
 	$('#content').append edit_div
 
 hide_edit_form = ->
+	$('#edit_page_button').show()
+	$('#attach_image_button').hide()
 	edit_div = $('#edit_page')
 	edit_div.fadeOut 100
 	$('#view_page').fadeIn 100

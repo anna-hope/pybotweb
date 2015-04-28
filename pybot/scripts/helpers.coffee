@@ -10,7 +10,7 @@ window.helpers =
 		for item in values
 			payload[item['name']] = item['value']
 		if extra_values?
-			payload[key] = value for key, value of extra
+			payload[key] = value for key, value of extra_values
 
 		if params?
 			serialized_params = $.param(params)
