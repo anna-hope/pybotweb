@@ -128,9 +128,12 @@ def modify_page(slug: str, **kwargs):
         page.__setattr__(k, v)
     db.session.commit()       
 
-def delete_page(slug: str):
+def delete_page(slug: str, delete_empty_category=False):
     page = get_page(slug)
+    category = page.category
     remove_from_db(page)
+    if delete_empty_category and len(category.pages.all()) == 0:
+        remove_from_db(category)
 
 # page categories
 
@@ -156,6 +159,10 @@ def get_page_category(slug=None, title=None):
 
 def get_all_page_categories() -> [Category]:
     return Category.query.all()
+
+def delete_category(slug=None, title=None):
+    category = get_page_category(slug, title)
+    remove_from_db(category)
 
 # header
 

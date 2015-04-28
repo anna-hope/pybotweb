@@ -38,9 +38,6 @@ def modify_page(slug: str, title: str, content_markdown: str, category=None):
 def get_page(slug: str):
 	return dbhelpers.get_page(slug=slug)
 
-def delete_page(slug: str):
-	dbhelpers.delete_page(slug)
-
 def get_category(slug: str):
 	return dbhelpers.get_page_category(slug)
 
@@ -157,6 +154,6 @@ def remove_page():
 	except KeyError:
 		return helpers.make_json_message(
 				'failure', 'you must provide a slug')
-	delete_page(slug)
+	dbhelpers.delete_page(slug, delete_empty_category=True)
 	return helpers.make_json_message(
 			'success', 'page "{}" was deleted'.format(slug))
