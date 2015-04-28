@@ -1,6 +1,10 @@
 get_current_page_asjson = ->
 	return $.get "#{location.href}?asjson=true"
 
+highlight_code = ->
+	for code_element in document.getElementsByTagName 'code'
+		hljs.highlightBlock code_element
+
 show_preview = (title, content, mode) ->
 	preview_div = $('<div id="page_preview"></div>')
 	page_title = "<h2 class='page_title'>#{title}</h2>"
@@ -16,7 +20,7 @@ show_preview = (title, content, mode) ->
 
 	$('#content').append preview_div
 	preview_div.fadeIn 100
-
+	
 hide_preview = ->
 	preview_div = $('#page_preview')
 	preview_div.fadeOut 100
@@ -61,6 +65,7 @@ update_page = ->
 		new_content = response['content_html']
 		$('h2.page_title').text new_title
 		$('article.pybot_page').html new_content
+		highlight_code()
 
 dismiss_delete_page = ->
 	delete sessionStorage['really_remove']
@@ -93,6 +98,7 @@ $(document).ready () ->
 		result = helpers.post_form form, preview_url
 		result.done (response) ->
 			show_preview response['title'], response['content'], mode
+			highlight_code()
 
 	$('#content').on 'click', '#close_preview_button', () ->
 		hide_preview()

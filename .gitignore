@@ -65,3 +65,5 @@ Cakefile
 *.db
 *.css
 uploads
+
+highlight
